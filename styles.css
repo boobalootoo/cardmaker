@@ -1,0 +1,35 @@
+body {
+  font-family: sans-serif;
+  background: #f4f4f4;
+  padding: 20px;
+}
+
+.container {
+  display: flex;
+  gap: 40px;
+  max-width: 900px;
+  margin: auto;
+}
+
+form {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.card-preview {
+  flex: 1;
+  background: white;
+  padding: 20px;
+  border: 2px solid #333;
+  border-radius: 10px;
+  text-align: center;
+  max-width: 300px;
+}
+
+.card-preview img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 10px;
+}
