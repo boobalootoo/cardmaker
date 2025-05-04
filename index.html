@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Card Creator</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="container">
+    <form id="cardForm">
+      <h2>Create Your Card</h2>
+      <input type="text" id="cardName" placeholder="Card Name" required />
+      <textarea id="cardDesc" placeholder="Description"></textarea>
+      <input type="number" id="attack" placeholder="Attack" />
+      <input type="number" id="defense" placeholder="Defense" />
+      <input type="file" id="imageUpload" accept="image/*" />
+      <button type="submit">Save Card</button>
+    </form>
+
+    <div class="card-preview" id="cardPreview">
+      <img id="previewImage" src="" alt="" />
+      <h3 id="previewName">Card Name</h3>
+      <p id="previewDesc">Description</p>
+      <p>⚔️ <span id="previewAttack">0</span> | 🛡️ <span id="previewDefense">0</span></p>
+    </div>
+  </div>
+
+  <script src="main.js"></script>
+</body>
+</html>
