@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Species Card Generator</title>
+  <style>
+    body {
+      background: #111;
+      color: #fff;
+      font-family: sans-serif;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      min-height: 100vh; /* Ensure body takes full viewport height */
+      align-items: center; /* Center cards vertically if few */
+    }
+    .card {
+      position: relative;
+      width: 800px;
+      height: 1120px;
+      margin: 20px;
+      background-size: cover;
+      background-position: center;
+      color: white;
+      box-shadow: 0 0 10px #000;
+      border-radius: 15px; /* Added rounded corners for aesthetics */
+      overflow: hidden; /* Ensure content stays within rounded corners */
+    }
+    .species-img {
+      position: absolute;
+      top: 100px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 350px;
+      height: 350px;
+      object-fit: contain;
+      border: 10px solid goldenrod;
+      background: white;
+      border-radius: 10px; /* Rounded corners for the image border */
+    }
+    .common-name-title {
+      position: absolute;
+      top: 470px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 80%;
+      text-align: center;
+      font-size: 36px;
+      font-weight: bold;
+      color: goldenrod;
+      text-shadow: 2px 2px 4px black;
+      z-index: 10;
+    }
+    .scientific-name-subtitle {
+      position: absolute;
+      top: 520px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 80%;
+      text-align: center;
+      font-size: 24px;
+      font-style: italic;
+      color: lightgray;
+      text-shadow: 1px 1px 2px black;
+      z-index: 10;
+    }
+    .info {
+      position: absolute;
+      top: 580px; /* Adjusted top to start below the subtitle */
+      bottom: 100px;
+      left: 120px;
+      right: 80px;
+      font-size: 20px;
+      line-height: 1.4;
+      text-shadow: 1px 1px 2px black;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+      gap: 10px; /* Increased space between info lines for better readability */
+    }
+    .info-line {
+      display: flex; /* Use flex for individual lines to align label and value */
+      flex-direction: column; /* Stack label and value if value is long */
+      margin-bottom: 5px; /* Small margin for separation */
+    }
+    .info-label {
+      font-weight: bold;
+      color: #ddd; /* Slightly lighter color for labels */
+      margin-bottom: 2px; /* Space between label and value */
+    }
+    .info-value {
+      word-wrap: break-word; /* Ensure long text wraps */
+      white-space: pre-wrap; /* Preserve whitespace and line breaks from data */
+    }
+    .info-value a {
+      color: lightblue; /* Style links */
+      text-decoration: underline;
+      /* Allow URLs to break to prevent overflow */
+      word-break: break-all;
+    }
+  </style>
+</head>
+<body>
+  <script>
+    // Updated CSV URL to the new source
+    const CSV_URL = "https://raw.githubusercontent.com/boobalootoo/cardmaker/main/CARDINFO2.csv";
+    const BACKGROUND_URL = "https://raw.githubusercontent.com/boobalootoo/cardmaker/main/woodland%20card%20background%20resized.png";
+    const IMAGE_BASE_URL = "https://raw.githubusercontent.com/boobalootoo/simplifiedgame/main/images/";
+
+    /**
+     * Sanitizes a string to be used as a filename by encoding URI components
+     * and appending a .png extension.
+     * @param {string} name - The original filename.
+     * @returns {string} The sanitized filename.
+     */
+    function sanitizeFilename(name) {
+      return encodeURIComponent(name.trim()) + ".png";
+    }
+
+    /**
+     * Strips leading/trailing quotes from a string.
+     * @param {string} value - The string to strip quotes from.
+     * @returns {string} The string with quotes removed.
+     */
+    function stripQuotes(value) {
+      if (typeof value === 'string' && value.startsWith('"') && value.endsWith('"')) {
+        return value.substring(1, value.length - 1);
+      }
+      return value;
+    }
+
+    /**
+     * Fetches and parses a CSV file from the given URL.
+     * @param {string} url - The URL of the CSV file.
+     * @returns {Promise<Array<Object>>} A promise that resolves to an array of objects,
+     * where each object represents a row in the CSV with headers as keys.
+     */
+    async function fetchCSV(url) {
+      try {
+        const response = await fetch(url);
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        const text = await response.text();
+        const lines = text.split("\n").map(line => line.trim()).filter(Boolean);
+        if (lines.length === 0) {
+          console.warn("CSV file is empty or contains no data.");
+          return [];
+        }
+        const headers = lines[0].split(",").map(h => h.trim());
+        return lines.slice(1).map(line => {
+          const values = line.split(",").map(v => v.trim());
+          return headers.reduce((obj, h, i) => {
+            // Apply stripQuotes to each value as it's being assigned
+            obj[h] = stripQuotes(values[i] || "");
+            return obj;
+          }, {});
+        });
+      } catch (error) {
+        console.error("Error fetching or parsing CSV:", error);
+        return []; // Return empty array on error
+      }
+    }
+
+    /**
+     * Creates and appends species cards to the document body based on CSV data.
+     */
+    async function createCards() {
+      const data = await fetchCSV(CSV_URL);
+      if (data.length === 0) {
+        const message = document.createElement("p");
+        message.textContent = "No card data found or an error occurred. Please check the CSV URL.";
+        message.style.textAlign = "center";
+        message.style.width = "100%";
+        document.body.appendChild(message);
+        return;
+      }
+
+      for (const row of data) {
+        // Debugging: Log the entire row to see what data is available
+        console.log("Processing row:", row);
+
+        const card = document.createElement("div");
+        card.className = "card";
+        card.style.backgroundImage = `url('${BACKGROUND_URL}')`;
+
+        // Create and append the species image
+        const speciesImg = document.createElement("img");
+        speciesImg.className = "species-img";
+        // Ensure "Common Name" is used for the image filename as per previous logic
+        const filename = sanitizeFilename(row["Common Name"]);
+        speciesImg.src = IMAGE_BASE_URL + filename;
+        // Fallback for broken images: remove the image element
+        speciesImg.onerror = () => {
+          console.error("❌ Image not found or failed to load:", IMAGE_BASE_URL + filename);
+          speciesImg.remove(); // Hide broken image
+        };
+        card.appendChild(speciesImg);
+
+        // Create and append the Common Name title
+        const commonNameTitle = document.createElement("div");
+        commonNameTitle.className = "common-name-title";
+        commonNameTitle.textContent = row["Common Name"] || "N/A";
+        card.appendChild(commonNameTitle);
+
+        // Create and append the Scientific Name subtitle
+        const scientificNameSubtitle = document.createElement("div");
+        scientificNameSubtitle.className = "scientific-name-subtitle";
+        scientificNameSubtitle.textContent = row["Scientific Name"] || "N/A";
+        card.appendChild(scientificNameSubtitle);
+
+        // Create and append the info box for other details
+        const infoBox = document.createElement("div");
+        infoBox.className = "info";
+
+        // Define the desired order of information fields based on the new CSV and user request
+        const orderedFields = [
+          { key: "description", label: "Description" },
+          { key: "Number of Occurrences", label: "Number of Occurrences" },
+          // Ensure these keys exactly match the CSV headers
+          { key: "Establishment M", label: "Establishment Means" },
+          { key: "First recorded in", label: "First recorded in UK" },
+          { key: "Taxon Id", label: "Taxon ID" },
+          { key: "NBN Atlas Page", label: "NBN Atlas Page", isLink: true, displayFullUrl: true },
+          { key: "Wikipedia Page", label: "Wikipedia Page", isLink: true, displayFullUrl: true }
+        ];
+
+        for (const field of orderedFields) {
+          const value = row[field.key];
+          // Debugging: Log the value for each field
+          console.log(`  Field: ${field.label} (Key: ${field.key}), Value: "${value}"`);
+
+          if (value) { // Only add if value exists and is not empty
+            const infoLine = document.createElement("div");
+            infoLine.className = "info-line";
+
+            const labelSpan = document.createElement("span");
+            labelSpan.className = "info-label";
+            labelSpan.textContent = `${field.label}: `;
+            infoLine.appendChild(labelSpan);
+
+            const valueSpan = document.createElement("span");
+            valueSpan.className = "info-value";
+
+            if (field.isLink) {
+              const link = document.createElement("a");
+              link.href = value;
+              link.textContent = field.displayFullUrl ? value : `Click to view`;
+              link.target = "_blank";
+              link.rel = "noopener noreferrer";
+              valueSpan.appendChild(link);
+            } else {
+              valueSpan.textContent = value;
+            }
+            infoLine.appendChild(valueSpan);
+            infoBox.appendChild(infoLine);
+          }
+        }
+
+        card.appendChild(infoBox);
+        document.body.appendChild(card);
+      }
+    }
+
+    // Call the function to create cards when the script loads
+    createCards();
+  </script>
+</body>
+</html>
