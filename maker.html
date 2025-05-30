@@ -1,142 +1,105 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Species Card Viewer</title>
+  <meta charset="UTF-8" />
+  <title>Species Card Generator</title>
   <style>
     body {
+      background: #111;
+      color: #fff;
       font-family: sans-serif;
-      background: #222;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+    .card {
+      position: relative;
+      width: 800px;
+      height: 1120px;
+      margin: 20px;
+      background-size: cover;
+      background-position: center;
       color: white;
-      text-align: center;
-      padding: 20px;
+      box-shadow: 0 0 10px #000;
     }
-    canvas {
-      border: 1px solid #888;
-      margin-top: 20px;
+    .info {
+      position: absolute;
+      bottom: 100px;
+      left: 120px;
+      right: 80px;
+      font-size: 20px;
+      line-height: 1.4;
+      text-shadow: 1px 1px 2px black;
     }
-    button {
-      margin: 10px;
-      padding: 10px 20px;
-      font-size: 16px;
-      cursor: pointer;
+    .species-img {
+      position: absolute;
+      top: 150px;
+      left: 287px;
+      width: 450px;
+      height: 450px;
+      object-fit: contain;
+      border: 10px solid goldenrod;
+      background: white;
     }
   </style>
 </head>
 <body>
-  <h1>Species Card Viewer</h1>
-  <canvas id="cardCanvas" width="1024" height="768"></canvas>
-  <br>
-  <button id="prevBtn">Previous</button>
-  <button id="nextBtn">Next</button>
-  <button id="downloadBtn">Download This Card</button>
-
-  <!-- PapaParse for CSV parsing -->
-  <script src="https://cdn.jsdelivr.net/npm/papaparse@5.3.2/papaparse.min.js"></script>
   <script>
-    const CSV_URL = 'https://raw.githubusercontent.com/boobalootoo/cardmaker/main/CARDINFo3DONOTEDIT.csv';
-    const BACKGROUND_URL = 'https://raw.githubusercontent.com/boobalootoo/cardmaker/main/woodland%20card%20background%20resized.png';
-    const IMAGE_BASE_URL = 'https://raw.githubusercontent.com/boobalootoo/simplifiedgame/main/images/';
-
-    const canvas = document.getElementById('cardCanvas');
-    const ctx = canvas.getContext('2d');
-    const downloadBtn = document.getElementById('downloadBtn');
-    const prevBtn = document.getElementById('prevBtn');
-    const nextBtn = document.getElementById('nextBtn');
-
-    let cardData = [];
-    let currentIndex = 0;
-    let backgroundImage = new Image();
-    backgroundImage.crossOrigin = 'anonymous';
-    backgroundImage.src = BACKGROUND_URL;
-
-    backgroundImage.onload = () => {
-      fetch(CSV_URL)
-        .then(response => response.text())
-        .then(csvText => {
-          const parsed = Papa.parse(csvText, { header: true, skipEmptyLines: true });
-          cardData = parsed.data;
-          showCard(currentIndex);
-        });
-    };
+    const CSV_URL = "https://raw.githubusercontent.com/boobalootoo/cardmaker/main/CARDINFo3DONOTEDIT.csv";
+    const BACKGROUND_URL = "https://raw.githubusercontent.com/boobalootoo/cardmaker/main/woodland%20card%20background%20resized.png";
+    const IMAGE_BASE_URL = "https://raw.githubusercontent.com/boobalootoo/simplifiedgame/main/images/";
 
     function sanitizeFilename(name) {
-      // Convert to lowercase, replace spaces and special characters with underscores
-      return name.trim().toLowerCase().replace(/[^a-z0-9]/g, '_') + '.png';
+      return encodeURIComponent(name.trim()) + ".png";
     }
 
-    function showCard(index) {
-      const data = cardData[index];
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-      ctx.drawImage(backgroundImage, 0, 0, canvas.width, canvas.height);
+    async function fetchCSV(url) {
+      const response = await fetch(url);
+      const text = await response.text();
+      const lines = text.split("\n").map(line => line.trim()).filter(Boolean);
+      const headers = lines[0].split(",").map(h => h.trim());
+      return lines.slice(1).map(line => {
+        const values = line.split(",").map(v => v.trim());
+        return headers.reduce((obj, h, i) => {
+          obj[h] = values[i] || "";
+          return obj;
+        }, {});
+      });
+    }
 
-      const speciesName = data["Species Name"] || "";
-      const imageFilename = sanitizeFilename(speciesName);
-      const image = new Image();
-      image.crossOrigin = 'anonymous';
-      image.src = IMAGE_BASE_URL + imageFilename;
+    async function createCards() {
+      const data = await fetchCSV(CSV_URL);
+      for (const row of data) {
+        const card = document.createElement("div");
+        card.className = "card";
+        card.style.backgroundImage = `url('${BACKGROUND_URL}')`;
 
-      image.onload = () => {
-        const imgX = 287;
-        const imgY = 150;
-        const imgW = 450;
-        const imgH = 450;
+        const speciesImg = document.createElement("img");
+        speciesImg.className = "species-img";
+        const filename = sanitizeFilename(row["Species Name"]);
+        speciesImg.src = IMAGE_BASE_URL + filename;
+        speciesImg.onerror = () => {
+          console.error("❌ Image not found:", filename);
+          speciesImg.remove(); // Hide broken image
+        };
 
-        // Gold border
-        ctx.fillStyle = 'gold';
-        ctx.fillRect(imgX - 10, imgY - 10, imgW + 20, imgH + 20);
-
-        // Image
-        ctx.drawImage(image, imgX, imgY, imgW, imgH);
-
-        // Text
-        ctx.font = '28px Arial';
-        ctx.fillStyle = 'white';
-        ctx.strokeStyle = 'black';
-        ctx.lineWidth = 2;
-        let textY = 650;
-        const textX = canvas.width * 0.15;
-        const lineGap = 32;
-
-        for (const [key, value] of Object.entries(data)) {
-          if (key !== "Image Filename") {
-            const line = `${key}: ${value}`;
-            ctx.strokeText(line, textX, textY);
-            ctx.fillText(line, textX, textY);
-            textY += lineGap;
+        const infoBox = document.createElement("div");
+        infoBox.className = "info";
+        for (const [key, value] of Object.entries(row)) {
+          if (key !== "Species Name") {
+            const line = document.createElement("div");
+            line.textContent = `${key}: ${value}`;
+            infoBox.appendChild(line);
           }
         }
-      };
 
-      image.onerror = () => {
-        console.error(`❌ Image not found: ${imageFilename}`);
-        ctx.fillStyle = 'red';
-        ctx.font = 'bold 40px Arial';
-        ctx.fillText("Image Not Found", canvas.width / 2 - 150, canvas.height / 2);
-      };
+        card.appendChild(speciesImg);
+        card.appendChild(infoBox);
+        document.body.appendChild(card);
+      }
     }
 
-    prevBtn.onclick = () => {
-      if (currentIndex > 0) {
-        currentIndex--;
-        showCard(currentIndex);
-      }
-    };
-
-    nextBtn.onclick = () => {
-      if (currentIndex < cardData.length - 1) {
-        currentIndex++;
-        showCard(currentIndex);
-      }
-    };
-
-    downloadBtn.onclick = () => {
-      const link = document.createElement('a');
-      const speciesName = cardData[currentIndex]["Species Name"] || "card";
-      link.download = `${speciesName.replace(/\s+/g, '_')}_card.png`;
-      link.href = canvas.toDataURL();
-      link.click();
-    };
+    createCards();
   </script>
 </body>
 </html>
