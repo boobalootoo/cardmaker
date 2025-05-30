@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Species Image Gallery</title>
+    <style>
+        body { font-family: Arial, sans-serif; text-align: center; }
+        .gallery { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; }
+        .gallery img { width: 150px; height: 150px; object-fit: cover; }
+    </style>
+    <script src="images.js" defer></script>
+</head>
+<body>
+    <h1>Species Image Gallery</h1>
+    <div class="gallery" id="gallery"></div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            if (typeof images === "undefined") {
+                console.error("Error: images.js failed to load or images array is missing.");
+                return;
+            }
+
+            const gallery = document.getElementById("gallery");
+            images.forEach(image => {
+                const imgElement = document.createElement("img");
+                imgElement.src = image; // Adjusted to match actual file locations
+                imgElement.alt = image;
+                gallery.appendChild(imgElement);
+            });
+        });
+    </script>
+</body>
+</html>
