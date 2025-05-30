@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Species Card Generator</title>
+  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+  <style>
+    body {
+      background: #111;
+      color: #fff;
+      font-family: 'Press Start 2P', cursive;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      min-height: 100vh;
+      align-items: center;
+    }
+    .card {
+      position: relative;
+      width: 800px;
+      height: 1120px;
+      margin: 20px;
+      background-size: cover;
+      background-position: center;
+      color: white;
+      box-shadow: 0 0 10px #000;
+      border-radius: 15px;
+      overflow: hidden;
+      background-repeat: no-repeat;
+    }
+
+    /* Container for the species image and its frame */
+    .image-frame-container {
+      position: absolute;
+      top: 80px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 450px;
+      height: 450px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      border-radius: 10px;
+      margin-bottom: 40px;
+      z-index: 1;
+    }
+
+    /* Pseudo-element for the frame */
+    .image-frame-container::after {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-image: url('https://raw.githubusercontent.com/boobalootoo/cardmaker/refs/heads/main/frame.png');
+        background-size: cover;
+        z-index: 2;
+        pointer-events: none;
+    }
+
+    .species-img {
+      display: block;
+      width: 300px;
+      height: 300px;
+      object-fit: contain;
+      background: white;
+      border-radius: 5px;
+      border: none;
+      box-shadow: none;
+      z-index: 1;
+      position: relative;
+    }
+
+    .common-name-title {
+      position: absolute;
+      top: 500px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 80%;
+      text-align: center;
+      font-size: 32px;
+      font-weight: bold;
+      color: goldenrod;
+      text-shadow: 2px 2px 4px black;
+      z-index: 3;
+    }
+
+    .scientific-name-subtitle,
+    .info,
+    .info-label,
+    .info-value,
+    .info-value a {
+      color: black;
+      text-shadow:
+        -2px -2px 0 #FFF,
+         2px -2px 0 #FFF,
+        -2px  2px 0 #FFF,
+         2px  2px 0 #FFF,
+        -2px  0px 0 #FFF,
+         2px  0px 0 #FFF,
+         0px -2px 0 #FFF,
+         0px  2px 0 #FFF;
+    }
+
+    .scientific-name-subtitle {
+      position: absolute;
+      top: 550px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 80%;
+      text-align: center;
+      font-size: 20px;
+      font-style: italic;
+      z-index: 3;
+    }
+    .info {
+      position: absolute;
+      top: 610px;
+      bottom: 100px;
+      left: 120px;
+      right: 80px;
+      font-size: 16px;
+      line-height: 1.6;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+      gap: 8px;
+      z-index: 3;
+    }
+    .info-line {
+      display: flex;
+      flex-direction: column;
+      margin-bottom: 5px;
+    }
+    .info-label {
+      font-weight: bold;
+      margin-bottom: 2px;
+    }
+    .info-value {
+      word-wrap: break-word;
+      white-space: pre-wrap;
+    }
+    .info-value a {
+      text-decoration: underline;
+      word-break: break-all;
+    }
+
+    /* Download button */
+    .download-btn {
+      display: block;
+      margin: 10px auto 30px auto;
+      padding: 10px 20px;
+      background: goldenrod;
+      color: black;
+      font-weight: bold;
+      font-family: 'Press Start 2P', cursive;
+      border-radius: 5px;
+      text-align: center;
+      cursor: pointer;
+      user-select: none;
+      width: 180px;
+    }
+  </style>
+</head>
+<body>
+
+  <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+  <script>
+    const CSV_URL = "https://raw.githubusercontent.com/boobalootoo/cardmaker/main/CARDINFO2.csv";
+    const BACKGROUND_URL = "https://raw.githubusercontent.com/boobalootoo/cardmaker/main/woodland%20card%20background%20resized.png";
+    const IMAGE_BASE_URL = "https://raw.githubusercontent.com/boobalootoo/simplifiedgame/main/images/";
+
+    function sanitizeFilename(name) {
+      return encodeURIComponent(name.trim()) + ".png";
+    }
+
+    function stripQuotes(value) {
+      if (typeof value === 'string' && value.startsWith('"') && value.endsWith('"')) {
+        return value.substring(1, value.length - 1);
+      }
+      return value;
+    }
+
+    async function fetchCSV(url) {
+      try {
+        const response = await fetch(url);
+        if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+        const text = await response.text();
+        const lines = text.split("\n").map(line => line.trim()).filter(Boolean);
+        const headers = lines[0].split(",").map(h => h.trim());
+        return lines.slice(1).map(line => {
+          const values = line.split(",").map(v => v.trim());
+          return headers.reduce((obj, h, i) => {
+            obj[h] = stripQuotes(values[i] || "");
+            return obj;
+          }, {});
+        });
+      } catch (error) {
+        console.error("Error fetching CSV:", error);
+        return [];
+      }
+    }
+
+    async function createCards() {
+      const data = await fetchCSV(CSV_URL);
+      if (data.length === 0) {
+        const message = document.createElement("p");
+        message.textContent = "No card data found or an error occurred. Please check the CSV URL.";
+        message.style.textAlign = "center";
+        message.style.width = "100%";
+        document.body.appendChild(message);
+        return;
+      }
+
+      for (const row of data) {
+        const card = document.createElement("div");
+        card.className = "card";
+        card.style.backgroundImage = `url('${BACKGROUND_URL}')`;
+
+        // Container for the image and frame
+        const imageFrameContainer = document.createElement("div");
+        imageFrameContainer.className = "image-frame-container";
+
+        // The image itself
+        const speciesImg = document.createElement("img");
+        speciesImg.className = "species-img";
+        const filename = sanitizeFilename(row["Common Name"]);
+        speciesImg.src = IMAGE_BASE_URL + filename;
+        speciesImg.onerror = () => {
+          console.warn("❌ Image not found:", speciesImg.src);
+          speciesImg.remove();
+        };
+        imageFrameContainer.appendChild(speciesImg);
+
+        card.appendChild(imageFrameContainer);
+
+        const commonNameTitle = document.createElement("div");
+        commonNameTitle.className = "common-name-title";
+        commonNameTitle.textContent = row["Common Name"] || "N/A";
+        card.appendChild(commonNameTitle);
+
+        const sciName = document.createElement("div");
+        sciName.className = "scientific-name-subtitle";
+        sciName.textContent = row["Scientific Name"] || "N/A";
+        card.appendChild(sciName);
+
+        const infoBox = document.createElement("div");
+        infoBox.className = "info";
+
+        const orderedFields = [
+          { key: "description", label: "Description" },
+          { key: "Number of Occurrences", label: "Number of Occurrences" },
+          { key: "Establishment M", label: "Establishment Means" },
+          { key: "First recorded in", label: "First recorded in UK" },
+          { key: "Taxon Id", label: "Taxon ID" },
+          { key: "NBN Atlas Page", label: "NBN Atlas Page", isLink: true, displayFullUrl: true },
+          { key: "Wikipedia Page", label: "Wikipedia Page", isLink: true, displayFullUrl: true }
+        ];
+
+        for (const field of orderedFields) {
+          const value = row[field.key];
+          if (value) {
+            const line = document.createElement("div");
+            line.className = "info-line";
+
+            const label = document.createElement("span");
+            label.className = "info-label";
+            label.textContent = `${field.label}:`;
+            line.appendChild(label);
+
+            const val = document.createElement("span");
+            val.className = "info-value";
+
+            if (field.isLink) {
+              const link = document.createElement("a");
+              link.href = value;
+              link.textContent = field.displayFullUrl ? value : "Click to view";
+              link.target = "_blank";
+              link.rel = "noopener noreferrer";
+              val.appendChild(link);
+            } else {
+              val.textContent = value;
+            }
+
+            line.appendChild(val);
+            infoBox.appendChild(line);
+          }
+        }
+
+        card.appendChild(infoBox);
+        document.body.appendChild(card);
+
+        // Convert the card to an image and add download button
+        await convertCardToImage(card, row["Common Name"] || "species_card");
+      }
+    }
+
+    async function convertCardToImage(cardElement, baseFilename) {
+      try {
+        // Wait a moment for images to load inside the card
+        await new Promise(resolve => setTimeout(resolve, 500));
+
+        const canvas = await html2canvas(cardElement, {
+          backgroundColor: null, // Keep transparency if any
+          scale: 2 // Higher scale for better resolution
+        });
+        const dataUrl = canvas.toDataURL("image/png");
+
+        // Create a download link
+        const downloadLink = document.createElement("a");
+        downloadLink.href = dataUrl;
+        downloadLink.download = sanitizeFilename(baseFilename);
+        downloadLink.textContent = `Download "${baseFilename}" card image`;
+        downloadLink.className = "download-btn";
+
+        // Insert the download button right after the card
+        cardElement.after(downloadLink);
+      } catch (error) {
+        console.error("Error generating image for card:", error);
+      }
+    }
+
+    createCards();
+  </script>
+</body>
+</html>
