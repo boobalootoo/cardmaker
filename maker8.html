@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Species Card Generator</title>
+  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+  <style>
+    body {
+      background: #111;
+      color: #fff;
+      font-family: 'Press Start 2P', cursive;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      min-height: 100vh;
+      align-items: center;
+      padding-top: 80px; /* Add padding for the "Download All" button */
+    }
+    .card {
+      position: relative;
+      width: 800px;
+      height: 1120px;
+      margin: 20px;
+      background-size: cover;
+      background-position: center;
+      color: white;
+      box-shadow: 0 0 10px #000;
+      border-radius: 15px;
+      overflow: hidden;
+    }
+
+    /* Styles for the download buttons */
+    .download-button {
+      background-color: #4CAF50; /* Green */
+      border: none;
+      color: white;
+      padding: 10px 20px;
+      text-align: center;
+      text-decoration: none;
+      display: inline-block;
+      font-size: 16px;
+      margin: 4px 2px;
+      cursor: pointer;
+      border-radius: 8px;
+      font-family: 'Press Start 2P', cursive;
+      text-shadow: 1px 1px 2px black;
+      box-shadow: 2px 2px 5px rgba(0,0,0,0.5);
+      transition: background-color 0.3s ease;
+    }
+
+    .download-button:hover {
+      background-color: #45a049;
+    }
+
+    /* Specific style for individual card download button */
+    .card-download-button {
+      position: absolute;
+      bottom: 20px;
+      right: 20px;
+      z-index: 10; /* Ensure button is on top */
+      background-color: #008CBA; /* Blue */
+    }
+
+    .card-download-button:hover {
+      background-color: #007bb5;
+    }
+
+    #download-all-container {
+      width: 100%;
+      text-align: center;
+      position: fixed; /* Keep it at the top */
+      top: 0;
+      left: 0;
+      background: #222; /* Slightly darker background for the bar */
+      padding: 10px 0;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.5);
+      z-index: 100; /* Ensure it's above everything */
+    }
+
+    /* Container for the species image and its frame */
+    .image-frame-container {
+      position: absolute;
+      top: 80px; /* Moved slightly higher to accommodate larger frame */
+      left: 50%;
+      transform: translateX(-50%);
+      width: 450px; /* Increased width for a bigger frame */
+      height: 450px; /* Increased height for a bigger frame */
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      border-radius: 10px;
+      margin-bottom: 40px;
+      z-index: 1; /* This container itself can have a base z-index */
+    }
+
+    /* Pseudo-element for the frame - now in front of the image */
+    .image-frame-container::after {
+        content: '';
+        position: absolute;
+        top: 0; /* Position exactly over the container */
+        left: 0;
+        width: 100%; /* Cover the entire container */
+        height: 100%; /* Cover the entire container */
+        background-image: url('https://raw.githubusercontent.com/boobalootoo/cardmaker/refs/heads/main/frame.png');
+        background-size: cover;
+        z-index: 2; /* Frame is now in front of the image (species-img has z-index: 1) */
+        pointer-events: none; /* Make sure it doesn't interfere with clicks */
+    }
+
+    .species-img {
+      display: block;
+      width: 300px; /* Made the image smaller */
+      height: 300px; /* Made the image smaller */
+      object-fit: contain;
+      background: white; /* Ensures background is white if image has transparency */
+      border-radius: 5px;
+      border: none;
+      box-shadow: none;
+      z-index: 1; /* Image is now behind the frame (z-index: 2) */
+      position: relative; /* Needed for z-index to work on this element */
+    }
+
+    .common-name-title {
+      position: absolute;
+      top: 500px; /* Adjusted position based on smaller image and frame height */
+      left: 50%;
+      transform: translateX(-50%);
+      width: 80%;
+      text-align: center;
+      font-size: 32px;
+      font-weight: bold;
+      /* Adjusted gold color and text shadows for a less yellow, more rich gold effect */
+      color: #FFC107; /* A slightly less yellow, more orange-gold */
+      text-shadow:
+        -2px -2px 0 #A0522D, /* Sienna for a darker, richer outline */
+         2px -2px 0 #A0522D,
+        -2px  2px 0 #A0522D,
+         2px  2px 0 #A0522D,
+        -1px -1px 0 #D4AF37, /* Gold (Crayola) for inner shadow */
+         1px -1px 0 #D4AF37,
+        -1px  1px 0 #D4AF37,
+         1px  1px 0 #D4AF37,
+         0 0 8px rgba(255, 193, 7, 0.8), /* Soft glow matching the new gold */
+         0 0 15px rgba(255, 193, 7, 0.6); /* Larger, softer glow */
+      z-index: 3;
+    }
+
+    .scientific-name-subtitle,
+    .info,
+    .info-label,
+    .info-value,
+    .info-value a {
+      color: black;
+      text-shadow:
+        -2px -2px 0 #FFF,
+         2px -2px 0 #FFF,
+        -2px  2px 0 #FFF,
+         2px  2px 0 #FFF,
+        -2px  0px 0 #FFF,
+         2px  0px 0 #FFF,
+         0px -2px 0 #FFF,
+         0px  2px 0 #FFF;
+    }
+
+    .scientific-name-subtitle {
+      position: absolute;
+      top: 550px; /* Adjusted position based on new common name title position */
+      left: 50%;
+      transform: translateX(-50%);
+      width: 80%;
+      text-align: center;
+      font-size: 20px;
+      font-style: italic;
+      z-index: 3;
+    }
+    .info {
+      position: absolute;
+      top: 610px; /* Adjusted position based on new subtitle position */
+      bottom: 100px;
+      left: 120px;
+      right: 80px;
+      font-size: 16px;
+      line-height: 1.6;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+      gap: 8px;
+      z-index: 3;
+    }
+    .info-line {
+      display: flex;
+      flex-direction: column;
+      margin-bottom: 5px;
+    }
+    .info-label {
+      font-weight: bold;
+      margin-bottom: 2px;
+    }
+    .info-value {
+      word-wrap: break-word;
+      white-space: pre-wrap;
+    }
+    .info-value a {
+      text-decoration: underline;
+      word-break: break-all;
+    }
+  </style>
+</head>
+<body>
+  <div id="download-all-container">
+    <button id="download-all-btn" class="download-button">Download All Cards</button>
+  </div>
+
+  <script>
+    const CSV_URL = "https://raw.githubusercontent.com/boobalootoo/cardmaker/main/CARDINFO2.csv";
+    const BACKGROUND_URL = "https://raw.githubusercontent.com/boobalootoo/cardmaker/main/woodland%20card%20background%20resized.png";
+    const FRAME_URL = "https://raw.githubusercontent.com/boobalootoo/cardmaker/refs/heads/main/frame.png";
+    const IMAGE_BASE_URL = "https://raw.githubusercontent.com/boobalootoo/simplifiedgame/main/images/";
+
+    /**
+     * Sanitizes a string to be used as a filename by encoding URI components
+     * and appending a .png extension.
+     * @param {string} name - The original filename.
+     * @returns {string} The sanitized filename.
+     */
+    function sanitizeFilename(name) {
+      // Replace spaces with underscores for cleaner filenames
+      return encodeURIComponent(name.trim().replace(/\s+/g, '_')) + ".png";
+    }
+
+    /**
+     * Strips leading/trailing quotes from a string.
+     * @param {string} value - The string to strip quotes from.
+     * @returns {string} The string with quotes removed.
+     */
+    function stripQuotes(value) {
+      if (typeof value === 'string' && value.startsWith('"') && value.endsWith('"')) {
+        return value.substring(1, value.length - 1);
+      }
+      return value;
+    }
+
+    /**
+     * Fetches and parses a CSV file from the given URL.
+     * @param {string} url - The URL of the CSV file.
+     * @returns {Promise<Array<Object>>} A promise that resolves to an array of objects,
+     * where each object represents a row in the CSV with headers as keys.
+     */
+    async function fetchCSV(url) {
+      try {
+        const response = await fetch(url);
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        const text = await response.text();
+        const lines = text.split("\n").map(line => line.trim()).filter(Boolean);
+        if (lines.length === 0) {
+          console.warn("CSV file is empty or contains no data.");
+          return [];
+        }
+        const headers = lines[0].split(",").map(h => h.trim());
+        return lines.slice(1).map(line => {
+          const values = line.split(",").map(v => v.trim());
+          return headers.reduce((obj, h, i) => {
+            obj[h] = stripQuotes(values[i] || "");
+            return obj;
+          }, {});
+        });
+      } catch (error) {
+        console.error("Error fetching or parsing CSV:", error);
+        return []; // Return empty array on error
+      }
+    }
+
+    /**
+     * Downloads a given HTML element as a PNG image.
+     * @param {HTMLElement} element - The HTML element to capture.
+     * @param {string} filename - The desired filename for the downloaded image.
+     */
+    async function downloadCardAsImage(element, filename) {
+      try {
+        // Use html2canvas to render the element to a canvas
+        const canvas = await html2canvas(element, {
+          scale: 2, // Increase scale for better resolution
+          useCORS: true, // Enable CORS to load cross-origin images (like background and frame)
+          logging: false, // Disable html2canvas logging
+          backgroundColor: null // Transparent background if not explicitly set by card
+        });
+
+        // Convert the canvas to a data URL (PNG format)
+        const imageDataURL = canvas.toDataURL('image/png');
+
+        // Create a temporary anchor element to trigger the download
+        const link = document.createElement('a');
+        link.href = imageDataURL;
+        link.download = filename; // Set the download filename
+        document.body.appendChild(link); // Append to body (required for Firefox)
+        link.click(); // Programmatically click the link to trigger download
+        document.body.removeChild(link); // Clean up the temporary link
+      } catch (error) {
+        console.error("Error downloading card as image:", error);
+        // Provide user feedback without using alert()
+        const messageBox = document.createElement('div');
+        messageBox.textContent = `Failed to download card: ${error.message}. Please check console for details.`;
+        messageBox.style.cssText = `
+          position: fixed;
+          top: 50%;
+          left: 50%;
+          transform: translate(-50%, -50%);
+          background-color: #f44336; /* Red */
+          color: white;
+          padding: 20px;
+          border-radius: 8px;
+          z-index: 9999;
+          font-family: sans-serif;
+          box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        `;
+        document.body.appendChild(messageBox);
+        setTimeout(() => messageBox.remove(), 5000); // Remove after 5 seconds
+      }
+    }
+
+    /**
+     * Handles the download of all generated cards.
+     */
+    async function handleDownloadAll() {
+      const cards = document.querySelectorAll('.card');
+      if (cards.length === 0) {
+        console.warn("No cards to download.");
+        return;
+      }
+
+      // Disable the button during download
+      const downloadAllBtn = document.getElementById('download-all-btn');
+      downloadAllBtn.disabled = true;
+      downloadAllBtn.textContent = 'Downloading...';
+
+      for (let i = 0; i < cards.length; i++) {
+        const card = cards[i];
+        const commonName = card.querySelector('.common-name-title')?.textContent || `Card_${i + 1}`;
+        const filename = sanitizeFilename(commonName);
+        await downloadCardAsImage(card, filename);
+        // Add a small delay between downloads to prevent browser issues
+        await new Promise(resolve => setTimeout(resolve, 500));
+      }
+
+      // Re-enable the button after all downloads
+      downloadAllBtn.disabled = false;
+      downloadAllBtn.textContent = 'Download All Cards';
+    }
+
+    /**
+     * Creates and appends species cards to the document body based on CSV data.
+     */
+    async function createCards() {
+      const data = await fetchCSV(CSV_URL);
+      if (data.length === 0) {
+        const message = document.createElement("p");
+        message.textContent = "No card data found or an error occurred. Please check the CSV URL.";
+        message.style.textAlign = "center";
+        message.style.width = "100%";
+        document.body.appendChild(message);
+        return;
+      }
+
+      for (const row of data) {
+        const card = document.createElement("div");
+        card.className = "card";
+        card.style.backgroundImage = `url('${BACKGROUND_URL}')`;
+
+        // Container for the image and frame
+        const imageFrameContainer = document.createElement("div");
+        imageFrameContainer.className = "image-frame-container";
+
+        // The image itself
+        const speciesImg = document.createElement("img");
+        speciesImg.className = "species-img";
+        const filename = sanitizeFilename(row["Common Name"]);
+        speciesImg.src = IMAGE_BASE_URL + filename;
+        speciesImg.onerror = () => {
+          console.warn("❌ Image not found:", speciesImg.src);
+          speciesImg.remove();
+        };
+        imageFrameContainer.appendChild(speciesImg);
+
+        card.appendChild(imageFrameContainer);
+
+        const commonNameTitle = document.createElement("div");
+        commonNameTitle.className = "common-name-title";
+        commonNameTitle.textContent = row["Common Name"] || "N/A";
+        card.appendChild(commonNameTitle);
+
+        const sciName = document.createElement("div");
+        sciName.className = "scientific-name-subtitle";
+        sciName.textContent = row["Scientific Name"] || "N/A";
+        card.appendChild(sciName);
+
+        const infoBox = document.createElement("div");
+        infoBox.className = "info";
+
+        const orderedFields = [
+          { key: "description", label: "Description" },
+          { key: "Number of Occurrences", label: "Number of Occurrences" },
+          { key: "Establishment M", label: "Establishment Means" },
+          { key: "First recorded in", label: "First recorded in UK" },
+          { key: "Taxon Id", label: "Taxon ID" },
+          { key: "NBN Atlas Page", label: "NBN Atlas Page", isLink: true, displayFullUrl: true },
+          { key: "Wikipedia Page", label: "Wikipedia Page", isLink: true, displayFullUrl: true }
+        ];
+
+        for (const field of orderedFields) {
+          const value = row[field.key];
+          if (value) {
+            const line = document.createElement("div");
+            line.className = "info-line";
+
+            const label = document.createElement("span");
+            label.className = "info-label";
+            label.textContent = `${field.label}:`;
+            line.appendChild(label);
+
+            const val = document.createElement("span");
+            val.className = "info-value";
+
+            if (field.isLink) {
+              const link = document.createElement("a");
+              link.href = value;
+              link.textContent = field.displayFullUrl ? value : "Click to view";
+              link.target = "_blank";
+              link.rel = "noopener noreferrer";
+              val.appendChild(link);
+            } else {
+              val.textContent = value;
+            }
+
+            line.appendChild(val);
+            infoBox.appendChild(line);
+          }
+        }
+
+        card.appendChild(infoBox);
+
+        // Add individual download button to each card
+        const downloadBtn = document.createElement('button');
+        downloadBtn.className = 'download-button card-download-button';
+        downloadBtn.textContent = 'Download Card';
+        downloadBtn.onclick = () => downloadCardAsImage(card, sanitizeFilename(row["Common Name"] + "_card"));
+        card.appendChild(downloadBtn);
+
+        document.body.appendChild(card);
+      }
+    }
+
+    // Event listener for the "Download All" button
+    document.addEventListener('DOMContentLoaded', () => {
+      const downloadAllBtn = document.getElementById('download-all-btn');
+      if (downloadAllBtn) {
+        downloadAllBtn.addEventListener('click', handleDownloadAll);
+      }
+      createCards(); // Call createCards after the DOM is ready
+    });
+  </script>
+</body>
+</html>
