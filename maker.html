@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Species Card Viewer</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      background: #222;
+      color: white;
+      text-align: center;
+      padding: 20px;
+    }
+    canvas {
+      border: 1px solid #888;
+      margin-top: 20px;
+    }
+    button {
+      margin: 10px;
+      padding: 10px 20px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <h1>Species Card Viewer</h1>
+  <canvas id="cardCanvas" width="1024" height="768"></canvas>
+  <br>
+  <button id="prevBtn">Previous</button>
+  <button id="nextBtn">Next</button>
+  <button id="downloadBtn">Download This Card</button>
+
+  <!-- PapaParse -->
+  <script src="https://cdn.jsdelivr.net/npm/papaparse@5.3.2/papaparse.min.js"></script>
+  <script>
+    const CSV_URL = 'https://raw.githubusercontent.com/boobalootoo/cardmaker/main/CARDINFo3DONOTEDIT.csv';
+    const BACKGROUND_URL = 'https://raw.githubusercontent.com/boobalootoo/cardmaker/main/woodland%20card%20background%20resized.png';
+    const IMAGE_BASE_URL = 'https://raw.githubusercontent.com/boobalootoo/simplifiedgame/main/images/';
+
+    const canvas = document.getElementById('cardCanvas');
+    const ctx = canvas.getContext('2d');
+    const downloadBtn = document.getElementById('downloadBtn');
+    const prevBtn = document.getElementById('prevBtn');
+    const nextBtn = document.getElementById('nextBtn');
+
+    let cardData = [];
+    let currentIndex = 0;
+    let backgroundImage = new Image();
+    backgroundImage.crossOrigin = 'anonymous';
+    backgroundImage.src = BACKGROUND_URL;
+
+    backgroundImage.onload = () => {
+      fetch(CSV_URL)
+        .then(response => response.text())
+        .then(csvText => {
+          const parsed = Papa.parse(csvText, { header: true, skipEmptyLines: true });
+          cardData = parsed.data;
+          showCard(currentIndex);
+        });
+    };
+
+    function showCard(index) {
+      const data = cardData[index];
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      ctx.drawImage(backgroundImage, 0, 0, canvas.width, canvas.height);
+
+      const image = new Image();
+      image.crossOrigin = 'anonymous';
+      image.src = IMAGE_BASE_URL + data["Image Filename"];
+
+      image.onload = () => {
+        const imgX = 287;
+        const imgY = 150;
+        const imgW = 450;
+        const imgH = 450;
+
+        // Gold border
+        ctx.fillStyle = 'gold';
+        ctx.fillRect(imgX - 10, imgY - 10, imgW + 20, imgH + 20);
+
+        // Image
+        ctx.drawImage(image, imgX, imgY, imgW, imgH);
+
+        // Text
+        ctx.font = '28px Arial';
+        ctx.fillStyle = 'white';
+        ctx.strokeStyle = 'black';
+        ctx.lineWidth = 2;
+        let textY = 650;
+        const textX = canvas.width * 0.15;
+        const lineGap = 32;
+
+        for (const [key, value] of Object.entries(data)) {
+          if (key !== "Image Filename") {
+            const line = `${key}: ${value}`;
+            ctx.strokeText(line, textX, textY);
+            ctx.fillText(line, textX, textY);
+            textY += lineGap;
+          }
+        }
+      };
+    }
+
+    prevBtn.onclick = () => {
+      if (currentIndex > 0) {
+        currentIndex--;
+        showCard(currentIndex);
+      }
+    };
+
+    nextBtn.onclick = () => {
+      if (currentIndex < cardData.length - 1) {
+        currentIndex++;
+        showCard(currentIndex);
+      }
+    };
+
+    downloadBtn.onclick = () => {
+      const link = document.createElement('a');
+      link.download = `${cardData[currentIndex]["Image Filename"].split('.')[0]}_card.png`;
+      link.href = canvas.toDataURL();
+      link.click();
+    };
+  </script>
+</body>
+</html>
