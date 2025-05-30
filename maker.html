@@ -31,7 +31,7 @@
   <button id="nextBtn">Next</button>
   <button id="downloadBtn">Download This Card</button>
 
-  <!-- PapaParse -->
+  <!-- PapaParse for CSV parsing -->
   <script src="https://cdn.jsdelivr.net/npm/papaparse@5.3.2/papaparse.min.js"></script>
   <script>
     const CSV_URL = 'https://raw.githubusercontent.com/boobalootoo/cardmaker/main/CARDINFo3DONOTEDIT.csv';
@@ -60,14 +60,21 @@
         });
     };
 
+    function sanitizeFilename(name) {
+      // Convert to lowercase, replace spaces and special characters with underscores
+      return name.trim().toLowerCase().replace(/[^a-z0-9]/g, '_') + '.png';
+    }
+
     function showCard(index) {
       const data = cardData[index];
       ctx.clearRect(0, 0, canvas.width, canvas.height);
       ctx.drawImage(backgroundImage, 0, 0, canvas.width, canvas.height);
 
+      const speciesName = data["Species Name"] || "";
+      const imageFilename = sanitizeFilename(speciesName);
       const image = new Image();
       image.crossOrigin = 'anonymous';
-      image.src = IMAGE_BASE_URL + data["Image Filename"];
+      image.src = IMAGE_BASE_URL + imageFilename;
 
       image.onload = () => {
         const imgX = 287;
@@ -100,6 +107,13 @@
           }
         }
       };
+
+      image.onerror = () => {
+        console.error(`❌ Image not found: ${imageFilename}`);
+        ctx.fillStyle = 'red';
+        ctx.font = 'bold 40px Arial';
+        ctx.fillText("Image Not Found", canvas.width / 2 - 150, canvas.height / 2);
+      };
     }
 
     prevBtn.onclick = () => {
@@ -118,7 +132,8 @@
 
     downloadBtn.onclick = () => {
       const link = document.createElement('a');
-      link.download = `${cardData[currentIndex]["Image Filename"].split('.')[0]}_card.png`;
+      const speciesName = cardData[currentIndex]["Species Name"] || "card";
+      link.download = `${speciesName.replace(/\s+/g, '_')}_card.png`;
       link.href = canvas.toDataURL();
       link.click();
     };
