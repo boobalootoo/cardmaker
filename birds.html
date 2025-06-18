@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Species Card Generator</title>
+  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet" />
+  <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+  <style>
+    body {
+      background: #111;
+      color: #fff;
+      font-family: 'Press Start 2P', cursive;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      min-height: 100vh;
+      align-items: center;
+    }
+    .card {
+      position: relative;
+      width: 800px;
+      height: 1120px;
+      margin: 20px;
+      background-size: cover;
+      background-position: center;
+      color: white;
+      box-shadow: 0 0 10px #000;
+      border-radius: 15px;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    .image-frame-container {
+      position: absolute;
+      top: 80px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 450px;
+      height: 450px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      border-radius: 10px;
+      margin-bottom: 40px;
+      z-index: 1;
+    }
+    .image-frame-container::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-image: url('frame.png'); /* Ensure you have a 'frame.png' if desired, or remove this */
+      background-size: cover;
+      z-index: 2;
+      pointer-events: none;
+    }
+    .species-img {
+      display: block;
+      width: 300px;
+      height: 300px;
+      object-fit: contain;
+      background: white;
+      border-radius: 5px;
+      z-index: 1;
+      position: relative;
+    }
+    .common-name-title {
+      position: absolute;
+      top: 500px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 80%;
+      text-align: center;
+      font-size: 32px;
+      font-weight: bold;
+      color: #FFC107;
+      text-shadow:
+        -2px -2px 0 #A0522D,
+        2px -2px 0 #A0522D,
+        -2px  2px 0 #A0522D,
+        2px  2px 0 #A0522D,
+        -1px -1px 0 #D4AF37,
+        1px -1px 0 #D4AF37,
+        -1px  1px 0 #D4AF37,
+        1px  1px 0 #D4AF37,
+        0 0 8px rgba(255, 193, 7, 0.8),
+        0 0 15px rgba(255, 193, 7, 0.6);
+      z-index: 3;
+    }
+    .scientific-name-subtitle {
+      position: absolute;
+      top: 550px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 80%;
+      text-align: center;
+      font-size: 20px;
+      font-style: italic;
+      z-index: 3;
+    }
+    .info {
+      position: absolute;
+      top: 610px;
+      bottom: 100px;
+      left: 120px;
+      right: 80px;
+      font-size: 16px;
+      line-height: 1.6;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+      gap: 8px;
+      z-index: 3;
+    }
+    .info-line {
+      display: flex;
+      flex-direction: column;
+      margin-bottom: 5px;
+    }
+    .info-label {
+      font-weight: bold;
+      margin-bottom: 2px;
+    }
+    .info-value {
+      word-wrap: break-word;
+      white-space: pre-wrap;
+    }
+    .info-value a {
+      text-decoration: underline;
+      word-break: break-all;
+    }
+    .download-btn {
+      position: absolute;
+      bottom: 30px;
+      left: 50%;
+      transform: translateX(-50%);
+      background-color: #FFC107;
+      border: none;
+      border-radius: 8px;
+      padding: 10px 20px;
+      font-family: 'Press Start 2P', cursive;
+      font-size: 14px;
+      cursor: pointer;
+      box-shadow:
+        0 0 5px #A0522D,
+        inset 0 -2px 0 #A0522D;
+      transition: background-color 0.3s ease;
+      z-index: 10;
+      color: #111;
+    }
+    .download-btn:hover {
+      background-color: #FFA000;
+    }
+  </style>
+</head>
+<body>
+  <script>
+    const BACKGROUND_URL = "./woodland card background resized.png";
+    const IMAGE_BASE_URL = "./"; // root
+
+    // ALL BIRD DATA IS NOW EMBEDDED HERE
+    const cardData = [
+      {
+        "Common Name": "Blue Tit",
+        "Scientific Name": "Cyanistes Caeruleus",
+        "Size": "12cm",
+        "Wing Span": "18cm",
+        "Favourite Foods": "Nuts, seeds, insects and caterpillars",
+        "Eggs": "White with orange spots",
+        "Fun Fact": "No other British tit has blue in its plumage."
+      },
+      {
+        "Common Name": "Goldfinch",
+        "Scientific Name": "Carduelis Carduelis",
+        "Size": "12-13cm",
+        "Wing Span": "21.25cm",
+        "Favourite Foods": "Seeds and insects",
+        "Eggs": "Small white spected",
+        "Fun Fact": "Autumn flocks can be sometimes made up of thousands of Goldfinches"
+      },
+      {
+        "Common Name": "Wren",
+        "Scientific Name": "Troglodytes Troglodytes",
+        "Size": "9-10cm",
+        "Wing Span": "13-17cm",
+        "Favourite Foods": "Nuts, Worms and bugs",
+        "Eggs": "In winter wrens like to cuddle together, with as many as 10 wrens sharing a nest. The most ever found sharing a single nest was 61!",
+        "Fun Fact": "" // Fun Fact field is empty on the card image
+      },
+      {
+        "Common Name": "Pigeon",
+        "Scientific Name": "Columbidae",
+        "Size": "38-44.5cm",
+        "Wing Span": "68-80cm",
+        "Favourite Foods": "Leaves, buds, fruit, berries and rubbish",
+        "Eggs": "Small & White",
+        "Fun Fact": "Even though people think pigeons are dirty they are actually very clean animals and there is very little evidence that they spread diseases."
+      },
+      {
+        "Common Name": "Song Thrush",
+        "Scientific Name": "Turdus Philomelos",
+        "Size": "20-23.5cm",
+        "Wing Span": "33-36cm",
+        "Favourite Foods": "Insects, spiders, fruit & berries",
+        "Eggs": "Sky-blue with black spots",
+        "Fun Fact": "Not everyone likes song thrushes. Their appetite for soft fruit has long made them unpopular with farmers growing strawberries, raspberries, and blackcurrants."
+      },
+      {
+        "Common Name": "House Sparrow",
+        "Scientific Name": "Passer Domesticus",
+        "Size": "14-18cm",
+        "Wing Span": "24-28cm",
+        "Favourite Foods": "Nuts, berries, buds, insects and scraps",
+        "Eggs": "White with brown specs",
+        "Fun Fact": "Adult sparrows are mainly vegetarian, but young sparrows mainly eat insects."
+      },
+      {
+        "Common Name": "Blackbird",
+        "Scientific Name": "Turdus merula",
+        "Size": "23.5-29cm",
+        "Wing Span": "35-38cm",
+        "Favourite Foods": "Bugs, Worms, Fruit & Berries",
+        "Eggs": "Small and Green/Blue",
+        "Fun Fact": "The blackbird is the common bird in the British Isles, with a population of around 6 million pairs. Blackbirds typically like to sing after rain."
+      },
+      {
+        "Common Name": "Robin",
+        "Scientific Name": "Erithacus rubecula",
+        "Size": "14cm",
+        "Wing Span": "20-22cm",
+        "Favourite Foods": "Worms, seeds, fruits, insects and other invertebrates.",
+        "Eggs": "Blue",
+        "Fun Fact": "The robin was declared Britain's National Bird on December 15th, 1960."
+      },
+      {
+        "Common Name": "Seagull",
+        "Scientific Name": "Larus canus",
+        "Size": "40-42cm",
+        "Wing Span": "110-130cm",
+        "Favourite Foods": "Worms, insects, fish, carrion and rubbish",
+        "Eggs": "Olive with dark splotches",
+        "Fun Fact": "A group of gulls has many collective nouns, including a \"flotilla\", \"gullery\", \"screech\", \"scavenging\", and \"squabble\" of gulls."
+      }
+    ];
+
+    function sanitizeFilename(name) {
+      return encodeURIComponent(name.trim()) + ".png";
+    }
+
+    function downloadCard(cardElement, fileName) {
+      html2canvas(cardElement, {backgroundColor: null}).then(canvas => {
+        canvas.toBlob(blob => {
+          const link = document.createElement("a");
+          link.download = fileName;
+          link.href = URL.createObjectURL(blob);
+          link.click();
+          URL.revokeObjectURL(link.href);
+        }, 'image/png');
+      });
+    }
+
+    async function createCards() {
+      // Data is already available in cardData array, no fetch needed
+      const data = cardData; 
+
+      if (data.length === 0) {
+        const message = document.createElement("p");
+        message.textContent = "No card data found.";
+        message.style.textAlign = "center";
+        message.style.width = "100%";
+        document.body.appendChild(message);
+        return;
+      }
+
+      for (const row of data) {
+        const card = document.createElement("div");
+        card.className = "card";
+        card.style.backgroundImage = `url('${BACKGROUND_URL}')`;
+
+        const imageFrameContainer = document.createElement("div");
+        imageFrameContainer.className = "image-frame-container";
+
+        const speciesImg = document.createElement("img");
+        speciesImg.className = "species-img";
+        speciesImg.src = IMAGE_BASE_URL + sanitizeFilename(row["Common Name"]);
+        speciesImg.onerror = () => {
+          console.warn("❌ Image not found:", speciesImg.src);
+          speciesImg.remove();
+        };
+        imageFrameContainer.appendChild(speciesImg);
+        card.appendChild(imageFrameContainer);
+
+        const commonNameTitle = document.createElement("div");
+        commonNameTitle.className = "common-name-title";
+        commonNameTitle.textContent = row["Common Name"] || "N/A";
+        card.appendChild(commonNameTitle);
+
+        const sciName = document.createElement("div");
+        sciName.className = "scientific-name-subtitle";
+        sciName.textContent = row["Scientific Name"] || "N/A";
+        card.appendChild(sciName);
+
+        const infoBox = document.createElement("div");
+        infoBox.className = "info";
+
+        // Define the specific order and labels for the fact file based on your card images
+        const orderedFields = [
+          { key: "Size", label: "Size" },
+          { key: "Wing Span", label: "Wing Span" },
+          { key: "Favourite Foods", label: "Favourite Foods" },
+          { key: "Eggs", label: "Eggs" },
+          { key: "Fun Fact", label: "Fun Fact" }
+        ];
+
+        for (const field of orderedFields) {
+          if (row[field.key]) { // Only add if data for the field exists
+            const line = document.createElement("div");
+            line.className = "info-line";
+            const label = document.createElement("div");
+            label.className = "info-label";
+            label.textContent = field.label + ":";
+            const value = document.createElement("div");
+            value.className = "info-value";
+            value.textContent = row[field.key];
+            
+            line.appendChild(label);
+            line.appendChild(value);
+            infoBox.appendChild(line);
+          }
+        }
+
+        card.appendChild(infoBox);
+
+        const downloadButton = document.createElement("button");
+        downloadButton.className = "download-btn";
+        downloadButton.textContent = "Download Card";
+        downloadButton.onclick = () => downloadCard(card, `${row["Common Name"]}.png`);
+        card.appendChild(downloadButton);
+
+        document.body.appendChild(card);
+      }
+    }
+
+    createCards();
+  </script>
+</body>
+</html>
