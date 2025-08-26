@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Species Card Generator</title>
+  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet" />
+  <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+  <style>
+    body {
+      background: #111;
+      color: #fff;
+      font-family: 'Press Start 2P', cursive;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      min-height: 100vh;
+      align-items: center;
+    }
+    .card {
+      position: relative;
+      width: 800px;
+      height: 1120px;
+      margin: 20px;
+      background-size: cover;
+      background-position: center;
+      color: white;
+      box-shadow: 0 0 10px #000;
+      border-radius: 15px;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    .type-icon {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      background-color: rgba(255, 193, 7, 0.9);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 14px;
+      font-weight: bold;
+      text-align: center;
+      padding: 5px;
+      z-index: 5;
+      color: #111;
+    }
+    .image-frame-container {
+      position: absolute;
+      top: 80px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 450px;
+      height: 450px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      border-radius: 10px;
+      margin-bottom: 40px;
+      z-index: 1;
+    }
+    .image-frame-container::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-image: url('frame.png');
+      background-size: cover;
+      z-index: 2;
+      pointer-events: none;
+    }
+    .species-img {
+      display: block;
+      width: 300px;
+      height: 300px;
+      object-fit: contain;
+      background: white;
+      border-radius: 5px;
+      z-index: 1;
+      position: relative;
+    }
+    .common-name-title {
+      position: absolute;
+      top: 500px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 80%;
+      text-align: center;
+      font-size: 32px;
+      font-weight: bold;
+      color: #FFC107;
+      text-shadow:
+        -2px -2px 0 #A0522D,
+         2px -2px 0 #A0522D,
+        -2px  2px 0 #A0522D,
+         2px  2px 0 #A0522D,
+         -1px -1px 0 #D4AF37,
+         1px -1px 0 #D4AF37,
+        -1px  1px 0 #D4AF37,
+         1px  1px 0 #D4AF37,
+         0 0 8px rgba(255, 193, 7, 0.8),
+         0 0 15px rgba(255, 193, 7, 0.6);
+      z-index: 3;
+    }
+    .info {
+      position: absolute;
+      top: 610px;
+      bottom: 100px;
+      left: 120px;
+      right: 80px;
+      font-size: 16px;
+      line-height: 1.6;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+      gap: 10px;
+      z-index: 3;
+    }
+    .info-line {
+      display: flex;
+      flex-direction: column;
+      margin-bottom: 5px;
+    }
+    .info-label {
+      font-weight: bold;
+      margin-bottom: 2px;
+      color: #FFC107;
+      text-shadow: 1px 1px 2px #000;
+    }
+    .info-value {
+      word-wrap: break-word;
+      white-space: pre-wrap;
+      color: white;
+      text-shadow: 1px 1px 2px #000;
+    }
+    .download-btn {
+      position: absolute;
+      bottom: 30px;
+      left: 50%;
+      transform: translateX(-50%);
+      background-color: #FFC107;
+      border: none;
+      border-radius: 8px;
+      padding: 10px 20px;
+      font-family: 'Press Start 2P', cursive;
+      font-size: 14px;
+      cursor: pointer;
+      box-shadow:
+        0 0 5px #A0522D,
+        inset 0 -2px 0 #A0522D;
+      transition: background-color 0.3s ease;
+      z-index: 10;
+      color: #111;
+    }
+    .download-btn:hover {
+      background-color: #FFA000;
+    }
+  </style>
+</head>
+<body>
+<script>
+const CSV_URL = "./CARDINFO2.csv";
+const BACKGROUND_URL = "./woodland card background resized.png";
+const IMAGE_BASE_URL = "./";
+
+function sanitizeFilename(name) {
+  return encodeURIComponent(name.trim()) + ".png";
+}
+
+function stripQuotes(value) {
+  if (typeof value === 'string' && value.startsWith('"') && value.endsWith('"')) {
+    return value.substring(1, value.length - 1);
+  }
+  return value;
+}
+
+async function fetchCSV(url) {
+  try {
+    const response = await fetch(url);
+    if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+    const text = await response.text();
+    const lines = text.split("\n").map(line => line.trim()).filter(Boolean);
+    const headers = lines[0].split(",").map(h => h.trim());
+    return lines.slice(1).map(line => {
+      const values = line.split(",").map(v => v.trim());
+      return headers.reduce((obj, h, i) => {
+        obj[h] = stripQuotes(values[i] || "");
+        return obj;
+      }, {});
+    });
+  } catch (error) {
+    console.error("Error fetching CSV:", error);
+    return [];
+  }
+}
+
+function downloadCard(cardElement, fileName) {
+  html2canvas(cardElement, {backgroundColor: null}).then(canvas => {
+    canvas.toBlob(blob => {
+      const link = document.createElement("a");
+      link.download = fileName;
+      link.href = URL.createObjectURL(blob);
+      link.click();
+      URL.revokeObjectURL(link.href);
+    }, 'image/png');
+  });
+}
+
+async function createCards() {
+  const data = await fetchCSV(CSV_URL);
+  if (data.length === 0) {
+    const message = document.createElement("p");
+    message.textContent = "No card data found or an error occurred. Please check the CSV file.";
+    message.style.textAlign = "center";
+    message.style.width = "100%";
+    document.body.appendChild(message);
+    return;
+  }
+
+  for (const row of data) {
+    const card = document.createElement("div");
+    card.className = "card";
+    card.style.backgroundImage = `url('${BACKGROUND_URL}')`;
+
+    // Species Type Icon
+    const typeIcon = document.createElement("div");
+    typeIcon.className = "type-icon";
+    typeIcon.textContent = row["Type"] || "N/A"; // e.g., Herbivore, Carnivore
+    card.appendChild(typeIcon);
+
+    const imageFrameContainer = document.createElement("div");
+    imageFrameContainer.className = "image-frame-container";
+
+    const speciesImg = document.createElement("img");
+    speciesImg.className = "species-img";
+    speciesImg.src = IMAGE_BASE_URL + sanitizeFilename(row["Common Name"]);
+    speciesImg.onerror = () => speciesImg.remove();
+    imageFrameContainer.appendChild(speciesImg);
+    card.appendChild(imageFrameContainer);
+
+    const commonNameTitle = document.createElement("div");
+    commonNameTitle.className = "common-name-title";
+    commonNameTitle.textContent = row["Common Name"] || "N/A";
+    card.appendChild(commonNameTitle);
+
+    const infoBox = document.createElement("div");
+    infoBox.className = "info";
+
+    const fields = [
+      { key: "Diet", label: "Diet" },
+      { key: "Population", label: "Population" },
+      { key: "Size", label: "Size" },
+      { key: "Speed", label: "Speed" },
+      { key: "Special Abilities", label: "Special Abilities" }
+    ];
+
+    for (const field of fields) {
+      const line = document.createElement("div");
+      line.className = "info-line";
+      const label = document.createElement("div");
+      label.className = "info-label";
+      label.textContent = field.label + ":";
+      const value = document.createElement("div");
+      value.className = "info-value";
+      value.textContent = row[field.key] || "________________";
+      line.appendChild(label);
+      line.appendChild(value);
+      infoBox.appendChild(line);
+    }
+
+    card.appendChild(infoBox);
+
+    const downloadButton = document.createElement("button");
+    downloadButton.className = "download-btn";
+    downloadButton.textContent = "Download Card";
+    downloadButton.onclick = () => downloadCard(card, `${row["Common Name"]}.png`);
+    card.appendChild(downloadButton);
+
+    document.body.appendChild(card);
+  }
+}
+
+createCards();
+</script>
+</body>
+</html>
