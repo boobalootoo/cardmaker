@@ -1,0 +1,330 @@
+Common Name,Category,Main Habitat,Avg Weight,Max Length,Max Speed,Special Abilities,effect,Population
+Banded Demoiselle,Omnivore,Freshwater,0.1 g,5 cm,2,Excellent aerial maneuvering,2X defence boost,88758
+Beautiful Demoiselle,Omnivore,Freshwater,0.1 g,5 cm,2,Strong predator of small insects,2X attack boost (insects),39454
+Broad-bodied Chaser,Omnivore,Freshwater,0.2 g,6 cm,3,Able to hover mid-air while hunting,2X attack boost (insects),73499
+Buff-tailed Bumblebee,Pollinator,Grassland,0.2 g,2 cm,15,Efficient flower pollinator,2X flower populations,35230
+Cave Spider,Carnivore,Woodland,0.5 g,1 cm,0,Venomous bite to subdue prey,2X attack boost and defence boost,505
+Comma Butterfly,Pollinator,Woodland,0.5 g,5 cm,15,Camouflage as dead leaf,2X defence boost,775116
+Common Blue Butterfly,Pollinator,Grassland,0.4 g,4 cm,15,Quick and agile flier,2X defence boost,1129707
+Common Crab Spider,Carnivore,Grassland,0.2 g,1.5 cm,0,Ambush predator; can change color to blend with flowers,2X attack boost and defence boost,10568
+Common Darter Dragonfly,Pollinator,Freshwater,0.3 g,6 cm,30,Adept aerial hunter,2X attack boost,10568
+Common Fox Spider,Carnivore,Grassland,0.8 g,2 cm,5,Fast runner and agile hunter,2X attack boost and defence boost,10568
+Common Frog,Carnivore,Freshwater,300 g,9 cm,5,Strong jump for escape and hunting,2X attack boost and defence boost,107431
+Common Lizard,Carnivore,Grassland,50 g,20 cm,20,Can autotomize (drop) tail to escape predators,2X defence boost,78242
+Common Toad,Carnivore,Grassland,300 g,10 cm,3,Poisonous skin to deter predators,immune to predation,77598
+Death Cap Mushroom,Decomposer,Woodland,100 g,20 cm,0,Highly poisonous to mammals,immune to predation from mammals,15737
+Devils Coach Horse,Omnivore,Woodland,1 g,4 cm,1,Can emit defensive odor to deter predators,2X defence boost,2897
+European Adder,Omnivore,Grassland,100 g,60 cm,20,Venomous bite for hunting and defense,2X attack boost and defence boost,940
+European Garden Spider,Carnivore,Woodland,2 g,15 cm,0,Web-building to capture prey efficiently,2X attack boost (insects),940
+False Black Widow Spider,Carnivore,Woodland,1 g,10 cm,0,Venomous and aggressive defense,2X defence boost,1
+Fen Raft Spider,Carnivore,Wetland,10 g,6 cm,5,Can walk on water surface to catch prey,2X attack boost (insects),277
+Fly Agaric Mushroom,Decomposer,Woodland,50 g,20 cm,0,Poisonous to mammals,immune to predation from mammals,42011
+Grass Snake,Producer,Freshwater,200 g,120 cm,15,Non-venomous but strong swimmer,2X defence boost,37114
+Great Crested Newt,Carnivore,Wetland,50 g,20 cm,2,Regenerates limbs and tail,2X defence boost,94199
+Hammock-web Spider,Carnivore,Woodland,3 g,10 cm,0,Web builder for trapping insects,2X attack boost (insects),1
+Harlequin Ladybird,Omnivore,Woodland,5 g,1 cm,2,Produces toxins to deter predators,immune to predation,95139
+Holly Blue Butterfly,Pollinator,Woodland,0.4 g,4 cm,15,Camouflaged under leaves,2X defence boost,491026
+Jelly Ear Fungus,Decomposer,Woodland,10 g,10 cm,0,it releases a large number of spores to reproduce effectively,10X population boost,2238
+Lace Web Spider,Carnivore,Woodland,2 g,12 cm,0,Web-building ambush predator,2X attack boost and defence boost,N/A
+Large Red Damselfly,Pollinator,Freshwater,0.3 g,6 cm,25,Quick aerial hunting,2X attack boost (insects),N/A
+Marmalade Hoverfly,Pollinator,Grassland,0.3 g,2 cm,20,Mimics wasp for defense,2X defence boost,51708
+Marsh Frog,Carnivore,Wetland,500 g,15 cm,5,Powerful jump to catch prey,2X attack boost (insects),1181
+Migrant Hawker Dragonfly,Pollinator,Freshwater,0.4 g,8 cm,30,Long-distance migratory flight,2X flower populations in any habitat,94003
+Natterjack Toad,Carnivore,Grassland,400 g,12 cm,3,Poisonous skin and fast burrower,immune to predators,47769
+Painted Lady Butterfly,Pollinator,Grassland,0.5 g,5 cm,20,Long migratory flights,2X flower populations in any habitat,578637
+Palmate Newt,Carnivore,Wetland,50 g,15 cm,2,Regenerates tail and limbs,2X defence boost,23841
+Panther Cap Mushroom,Decomposer,Woodland,80 g,25 cm,0,Highly poisonous,2X defence boost,15737
+Peacock Butterfly,Pollinator,Woodland,0.5 g,6 cm,15,Eyespots to deter predators,2X defence boost,1495374
+Raft Spider,Carnivore,Wetland,15 g,7 cm,5,Can walk on water surface; strong swimmer,2X defence boost,280
+Red Admiral Butterfly,Pollinator,Woodland,0.5 g,6 cm,15,Migratory and fast flier,2X defence boost,1345839
+Red-tailed Bumblebee,Pollinator,Grassland,0.3 g,2 cm,15,Efficient pollinator,5X flower populations ,85416
+Running Crab Spider,Carnivore,Grassland,0.5 g,1.5 cm,5,Ambush predator; fast runner,2X attack boost and defence boost,1
+Sand Lizard,Carnivore,Grassland,60 g,25 cm,20,Camouflaged;fast escape,2X defence boost,55203
+Scarlet Elf Cup Fungus,Decomposer,Woodland,10 g,5 cm,0,Rapid spore dispersal,10X population,2238
+Seven-spot Ladybird,Omnivore,Woodland,5 g,1 cm,2,Produces toxins to deter predators,immune to predators,410
+Shaggy Inkcap Mushroom,Decomposer,Grassland,30 g,25 cm,0,TBD,10X population,15737
+Slow Worm,Omnivore,Grassland,50 g,40 cm,1,Can autotomize tail to escape predators,2X defence boost,75772
+Small Tortoiseshell Butterfly,Pollinator,Woodland,0.4 g,5 cm,15,Camouflage under leaves,2X defence boost,1345839
+Smooth Snake,Carnivore,Grassland,120 g,80 cm,20,Constricts prey; secretive,2X attack boost,14232
+Southern Hawker Dragonfly,Pollinator,Freshwater,0.4 g,7 cm,25,Strong flier; hunts mid-air,4X attack boost on flying insects,110222
+Speckled Wood Butterfly,Pollinator,Woodland,0.4 g,5 cm,15,Sunlight tracking for camouflage,2X defence boost,1880748
+Stag Beetle,Omnivore,Woodland,50 g,8 cm,5,Powerful jaws for defense,2X defence boost,4495
+Stinkhorn Fungus,Decomposer,Woodland,50 g,25 cm,0,Produces foul odor to attract insects,2X defence boost,2238
+Stripe-legged Spider,Carnivore,Grassland,3 g,8 cm,0,Web builder and ambush predator,2X attack boost,1
+Thick-legged Flower Beetle,Pollinator,Grassland,5 g,2 cm,5,Strong pollinator,5X flower populations ,11226
+Tree Bumblebee,Pollinator,Woodland,0.3 g,2 cm,15,Efficient flower pollinator,5X flower populations ,40251
+Wall Lizard,Carnivore,Urban,50 g,20 cm,20,Camouflage; fast escape,2X defence boost,3238
+Alpine Newt,Carnivore,Upland,50 g,15 cm,2,Regeneration of limbs,2X defence boost,436
+Edible Frog,Carnivore,Freshwater,300 g,9 cm,5,Strong jump; vocal alarm calls,2X defence boost,317
+Emperor Dragonfly,Pollinator,Freshwater,0.5 g,10 cm,30,Hunts mid-air; long-distance flight,4X attack boost on flying insects,593
+Orange Peel Fungus,Decomposer,Woodland,15 g,10 cm,0,Camouflaged; grows in leaf litter,2X defence boost,2238
+Balearic Shearwater,Apex predator,Marine,1 kg,50 cm,50,Long-distance migration and diving,2X attack boost,10487
+Barn Owl,Apex predator,Grassland,500 g,35 cm,40,Nocturnal hunting; silent flight,5X attack boost on nocturnal prey,277277
+Bearded Tit,Omnivore,Wetland,20 g,15 cm,15,Forages in reed beds,2X survival boost,58001
+Black Guillemot,Omnivore,Coastal,600 g,35 cm,20,Dives for fish,10X attack boost on fish,53230
+Black Redstart,Omnivore,Urban,20 g,15 cm,15,Agile flier; insect hunter,4X attack boost on flying insects,63663
+Blackcap,Omnivore,Woodland,20 g,15 cm,15,Imitates calls of other birds,2X survival boost,1616645
+Black-headed Gull,Apex predator,Coastal,500 g,40 cm,25,Opportunistic feeder; aerial acrobatics,2X survival boost,2457285
+Black-throated Thrush,Omnivore,Woodland,25 g,18 cm,15,Forages on ground and in trees,2X survival boost,325
+Blue Tit,Omnivore,Woodland,11 g,12 cm,20,Quick flier; acrobatic feeder,2X attack boost,5654596
+Brambling,Omnivore,Woodland,30 g,15 cm,15,Seasonal migratory bird,2X survival boost,226018
+Carrion Crow,Omnivore,Urban,500 g,45 cm,20,Highly intelligent; opportunistic feeder,3X survival boost,4024459
+Chaffinch,Omnivore,Woodland,25 g,15 cm,15,Seed disperser; agile flier,2X survival boost,4611457
+Coal Tit,Omnivore,Woodland,11 g,11 cm,15,Acrobatic feeder; caches food,4X attack boost on flying insects,2462432
+Collared Dove,Omnivore,Urban,150 g,32 cm,15,Adaptable to urban areas,2X survival boost,3073977
+Common Blackbird,Omnivore,Woodland,100 g,25 cm,15,Ground forager; sings to defend territory,2X survival boost,6172528
+Common Crossbill,Omnivore,Woodland,35 g,17 cm,15,Specialized bill for extracting seeds from cones,2X survival boost,79334
+Common Kingfisher,Omnivore,Freshwater,45 g,17 cm,25,Dives for fish with high precision,10X attack boost on fish,433432
+Common Linnet,Omnivore,Grassland,20 g,14 cm,15,Feeds on seeds; agile flier,2X survival boost,1075279
+Common Moorhen,Omnivore,Wetland,450 g,32 cm,15,Strong swimmer; feeds in water and on land,2X survival boost,1830631
+Common Redshank,Omnivore,Wetland,200 g,28 cm,20,Probes mud for invertebrates,4X attack boost on insects,885907
+Common Sandpiper,Omnivore,Wetland,50 g,20 cm,20,Feeds along water edges; agile flier,2X defence boost,321432
+Common Snipe,Omnivore,Wetland,150 g,25 cm,20,Camouflaged; rapid zigzag flight,4X defence boost,609373
+Common Swift,Omnivore,Urban,40 g,16 cm,100,Almost always airborne; fast fliers,only vunerable to other birds,883195
+Common Wood Pigeon,Omnivore,Woodland,400 g,38 cm,20,Strong flier; urban adaptable,2X survival boost,5306423
+Cormorant,Omnivore,Freshwater,2 kg,100 cm,35,Dives for fish; waterproof feathers,10X attack boost on fish,0
+Corn Bunting,Omnivore,Farmland,70 g,18 cm,15,Seed eater; strong flight,2X survival boost,149629
+Corncrake,Omnivore,Grassland,150 g,28 cm,20,Camouflaged; nocturnal calls,2X defence boost,95638
+Cuckoo,Omnivore,Woodland,110 g,32 cm,25,Brood parasite; lays eggs in other birds' nests,10X attack boost on birds,4420
+Dusky Warbler,Omnivore,Woodland,12 g,11 cm,15,Forages in dense undergrowth,2X survival boost,1438
+Eurasian Blackbird,Omnivore,Woodland,100 g,25 cm,15,Ground forager; sings to defend territory,2X survival boost,25929
+Eurasian Curlew,Omnivore,Wetland,1 kg,60 cm,20,Long curved bill for probing mud,4X attack boost on insects,1054556
+Eurasian Magpie,Omnivore,Woodland,250 g,45 cm,20,Highly intelligent; collects shiny objects,3X survival boost,4173391
+Eurasian Wren,Omnivore,Woodland,10 g,10 cm,15,Quick flier; loud song for size,2X defence boost,4115709
+European Goldfinch,Omnivore,Grassland,20 g,12 cm,15,Seed specialist; agile flier,2X survival boost,3788727
+European Greenfinch,Omnivore,Woodland,25 g,14 cm,15,Seed eater; acrobatic feeder,2X survival boost,3413735
+European Nightjar,Omnivore,Woodland,80 g,25 cm,25,Nocturnal; camouflaged plumage,2X defence boost,34989
+European Robin,Omnivore,Woodland,20 g,14 cm,15,Defends territory vocally; insect eater,4X attack boost on insects,5631632
+European Starling,Omnivore,Urban,100 g,25 cm,20,Highly social; mimics sounds,2X defence boost,940
+European Stonechat,Omnivore,Heathland,15 g,12 cm,15,Perches on shrubs; insect hunter,4X attack boost on insects,520031
+Firecrest,Omnivore,Woodland,7 g,9 cm,15,Quick insect catcher; acrobatic,4X attack boost on insects,72301
+Goldfinch,Omnivore,Grassland,20 g,12 cm,15,Seed eater; agile flier,2X defence boost,3788727
+Great Crested Grebe,Omnivore,Freshwater,1.2 kg,60 cm,25,Dives for fish; elaborate mating display,10X attack boost on fish,868416
+Great Spotted Woodpecker,Omnivore,Woodland,100 g,23 cm,15,Drills into wood to find insects; strong beak,4X attack boost on insects,1966186
+Great Tit,Omnivore,Woodland,20 g,14 cm,15,Adaptable feeder; intelligent problem solver,3X survival boost,4916602
+Grey Heron,Omnivore,Freshwater,2 kg,100 cm,25,Stalks fish in shallow water; patient hunter,10X attack boost on fish,1609349
+Hen Harrier,Apex predator,Grassland,400 g,50 cm,40,Hunts over open ground; sharp vision,2X attack boost,96197
+Herring Gull,Apex predator,Coastal,1 kg,60 cm,30,Opportunistic scavenger; aerial agility,2X survival boost,1907184
+House Sparrow,Omnivore,Urban,30 g,16 cm,15,Adaptable to human environments,2X survival boost,22
+Jackdaw,Omnivore,Urban,200 g,35 cm,20,Highly social; intelligent problem solver,3X survival boost,3089686
+Kestrel,Omnivore,Grassland,150 g,35 cm,30,Hovers while hunting; keen eyesight,2X attack boost,1
+Little Egret,Omnivore,Wetland,500 g,55 cm,25,Wades in shallow water; fish hunter,10X attack boost on fish,754394
+Little Owl,Apex predator,Farmland,200 g,22 cm,20,Nocturnal hunter; camouflaged plumage,2X defence boost,146981
+Little Tern,Apex predator,Coastal,120 g,25 cm,40,Dives for fish; agile flier,10X attack boost on fish,50836
+Long-tailed Tit,Omnivore,Woodland,10 g,15 cm,15,Lives in social groups; agile flier,2X defence boost,2335425
+Mallard Duck,Omnivore,Wetland,1 kg,60 cm,25,Strong swimmer; adaptable feeder,2X survival boost,0
+Marsh Harrier,Apex predator,Wetland,500 g,50 cm,35,Hunts over reed beds; sharp vision,2X survival boost,251593
+Meadow Pipit,Omnivore,Grassland,15 g,14 cm,15,Ground feeder; quick flier,2X survival boost,1133926
+Mute Swan,Omnivore,Wetland,10 kg,150 cm,15,Defends territory aggressively; strong swimmer,2X survival boost,41
+Northern Lapwing,Omnivore,Farmland,200 g,35 cm,25,Displays aerial acrobatics; ground feeder,2X survival boost,1367694
+Northern Wheatear,Omnivore,Grassland,25 g,16 cm,25,Migratory; ground feeder,2X survival boost,439895
+Pallas's Warbler,Omnivore,Woodland,8 g,11 cm,15,Forages in shrubs; agile flier,2X survival boost,2767
+Peregrine Falcon,Apex predator,Grassland,1 kg,50 cm,80,Fastest bird in level flight; aerial hunter,5X attack boost on birds,306765
+Pied Wagtail,Omnivore,Urban,25 g,18 cm,20,Agile insect hunter; ground feeder,4X attack boost on insects,1930385
+Pomarine Skua,Apex predator,Coastal,1.5 kg,60 cm,50,Pirates food from other birds; strong flier,5X survival boost on birds,14897
+Red Kite,Apex predator,Grassland,1 kg,60 cm,45,Scavenger and hunter; aerial acrobatics,2X survival boost,362461
+Red-backed Shrike,Omnivore,Grassland,30 g,20 cm,25,Impales prey on thorns; agile hunter,2X attack boost,5700
+Red-flanked Bluetail,Omnivore,Woodland,12 g,12 cm,15,Insect hunter; migratory,4X attack boost on insects,885
+Red-throated Diver,Omnivore,Freshwater,2 kg,80 cm,30,Dives for fish; migratory,10X attack boost on fish,152760
+Redwing,Omnivore,Woodland,30 g,20 cm,15,Ground feeder; migratory,,852904
+Reed Bunting,Omnivore,Wetland,20 g,14 cm,15,Seed and insect eater; agile flier,,4
+Ring Ouzel,Omnivore,Heathland,30 g,20 cm,20,Ground feeder; migratory,,63353
+Rook,Omnivore,Farmland,400 g,45 cm,20,Highly social; opportunistic feeder,,1439125
+Roseate Tern,Apex predator,Coastal,100 g,30 cm,40,Dives for fish; agile flier,,8165
+Rustic Bunting,Omnivore,Grassland,25 g,16 cm,15,Seed eater; migratory,,518
+Sand Martin,Omnivore,Urban,15 g,12 cm,20,Digs burrows in sandy banks; agile flier,,24
+Serin,Omnivore,Grassland,12 g,11 cm,15,Seed eater; migratory,,0
+Shag,Omnivore,Coastal,2 kg,85 cm,25,Dives for fish; strong swimmer,,273699
+Shore Lark,Omnivore,Grassland,30 g,16 cm,20,Ground feeder; migratory,,7859
+Skylark,Omnivore,Grassland,30 g,16 cm,20,Sings during flight; ground feeder,,1228617
+Snow Bunting,Omnivore,Upland,30 g,16 cm,20,Winter migrant; ground feeder,,49363
+Song Thrush,Omnivore,Woodland,70 g,25 cm,15,Reuses snail shells to break them; sings to defend territory,,2588581
+Spotted Flycatcher,Pollinator,Woodland,15 g,14 cm,20,Catches insects mid-air; agile flier,,232427
+Tawny Owl,Apex predator,Woodland,400 g,38 cm,20,Nocturnal hunter; silent flight,,440721
+Tree Pipit,Producer,Woodland,15 g,14 cm,15,Feeds on seeds; migratory,,712
+Water Rail,Omnivore,Wetland,200 g,30 cm,20,Forages in reeds; secretive,,239691
+Whinchat,Omnivore,Grassland,20 g,14 cm,20,Insect hunter; migratory,,132509
+White-tailed Eagle,Apex predator,Coastal,4 kg,90 cm,50,Powerful raptor; keen eyesight,,14692
+Wood Warbler,Omnivore,Woodland,12 g,11 cm,20,Insect catcher; agile flier,,47737
+Woodcock,Omnivore,Woodland,400 g,35 cm,15,Nocturnal feeder; camouflaged plumage,,140195
+Woodlark,Omnivore,Grassland,25 g,15 cm,15,Sings in flight; ground feeder,,39861
+Yellow Wagtail,Omnivore,Grassland,20 g,15 cm,20,Insect hunter; agile flier,,231817
+Greater Plantain,Producer,Grassland,5 g,30 cm,0,TBD,,133923
+Silverweed,Producer,Grassland,5 g,40 cm,0,TBD,,91664
+Great Willowherb,Producer,Wetland,50 g,150 cm,0,TBD,,109990
+Spearmint,Producer,Wetland,30 g,40 cm,0,TBD,,N/A
+Wild Radish,Omnivore,Grassland,20 g,80 cm,0,TBD,,N/A
+Common Chickweed,Producer,Grassland,5 g,30 cm,0,TBD,,N/A
+Hedge Bindweed,Producer,Woodland,10 g,200 cm,0,TBD,,1821
+Germander Speedwell,Producer,Grassland,5 g,30 cm,0,TBD,,123734
+Red Dead-nettle,Producer,Grassland,5 g,40 cm,0,TBD,,52285
+Green Alkanet,Omnivore,Grassland,10 g,50 cm,0,TBD,,21691
+Common Milkwort,Omnivore,Grassland,5 g,30 cm,0,TBD,,21272
+Selfheal,Omnivore,Grassland,5 g,30 cm,0,TBD,,19
+Greater Stitchwort,Omnivore,Grassland,5 g,40 cm,0,TBD,,N/A
+Common Water-crowfoot,Omnivore,Freshwater,5 g,50 cm,0,TBD,,122
+Marsh Horsetail,Herbivore,Wetland,10 g,100 cm,0,TBD,,37126
+Broom,Omnivore,Grassland,50 g,200 cm,0,TBD,,45586
+Common Fleabane,Omnivore,Grassland,5 g,40 cm,0,TBD,,35608
+Thrift (Sea Pink),Omnivore,Coastal,5 g,30 cm,0,TBD,,29236
+Marsh-marigold,Producer,Wetland,30 g,40 cm,0,TBD,,62782
+Common Centaury,Omnivore,Grassland,5 g,40 cm,0,TBD,,28829
+Cat’s-ear,Carnivore,Grassland,5 g,40 cm,0,TBD,,118544
+Common Toadflax,Carnivore,Grassland,5 g,50 cm,0,TBD,,29388
+Meadow Crane’s-bill,Omnivore,Grassland,5 g,40 cm,0,TBD,,111
+Yellow Archangel,Omnivore,Woodland,5 g,50 cm,0,TBD,,38421
+Common Valerian,Omnivore,Wetland,30 g,100 cm,0,TBD,,46526
+White Dead-nettle,Producer,Grassland,5 g,40 cm,0,TBD,,62165
+Yellow Flag Iris,Omnivore,Wetland,30 g,120 cm,0,TBD,,71208
+Common Spotted Orchid,Omnivore,Grassland,5 g,60 cm,0,TBD,,9
+Sea Holly,Producer,Coastal,10 g,80 cm,0,TBD,,4203
+Great Burnet,Omnivore,Grassland,10 g,60 cm,0,TBD,,12549
+Common Honeysuckle,Producer,Woodland,50 g,200 cm,0,TBD,,98063
+Marsh Violet,Producer,Wetland,5 g,30 cm,0,TBD,,41352
+Wild Parsnip,Omnivore,Grassland,30 g,150 cm,0,TBD,,14732
+Purple Loosestrife,Producer,Wetland,30 g,120 cm,0,TBD,,33651
+Common Mouse-ear,Herbivore,Grassland,5 g,30 cm,0,TBD,,157334
+Common Bistort,Omnivore,Wetland,20 g,100 cm,0,TBD,,8966
+Sneezewort,Omnivore,Grassland,5 g,50 cm,0,TBD,,37252
+Wood Avens,Omnivore,Woodland,10 g,60 cm,0,TBD,,104755
+Wild Clary,Omnivore,Grassland,5 g,60 cm,0,TBD,,3484
+Marsh Woundwort,Omnivore,Wetland,30 g,150 cm,0,TBD,,32246
+Meadowsweet,Omnivore,Wetland,20 g,120 cm,0,TBD,,135807
+Wild Angelica,Omnivore,Wetland,50 g,200 cm,0,TBD,,102953
+Yellow Rattle,Omnivore,Grassland,5 g,30 cm,0,TBD,,50976
+Wild Thyme,Producer,Grassland,5 g,20 cm,0,TBD,,50627
+Common Hemp-nettle,Producer,Grassland,5 g,60 cm,0,TBD,,5269
+Eyebright,Omnivore,Grassland,5 g,40 cm,0,TBD,,8097
+Wild Garlic (Crow Garlic),Omnivore,Woodland,10 g,60 cm,0,TBD,,12018
+Meadow Vetchling,Omnivore,Grassland,5 g,80 cm,0,TBD,,105244
+Harebell,Herbivore,Grassland,5 g,40 cm,0,TBD,,50430
+Common Knapweed,Producer,Grassland,5 g,60 cm,0,TBD,,331
+Betony,Omnivore,Grassland,5 g,50 cm,0,TBD,,30074
+Wild Basil,Producer,Grassland,5 g,50 cm,0,TBD,,15911
+Dogwood,Omnivore,Woodland,30 g,300 cm,0,TBD,,42564
+Wild Marjoram,Omnivore,Grassland,5 g,50 cm,0,TBD,,12744
+Greater Knapweed,Producer,Grassland,5 g,60 cm,0,TBD,,20332
+Wild Carrot,Producer,Grassland,10 g,150 cm,0,TBD,,43554
+Wild Strawberry,Producer,Grassland,5 g,30 cm,0,TBD,,1904
+Primrose,Omnivore,Grassland,5 g,25 cm,0,TBD,,81166
+Water Mint,Producer,Wetland,10 g,100 cm,0,TBD,,80575
+Marsh Cinquefoil,Omnivore,Wetland,20 g,80 cm,0,TBD,,26216
+Herb Robert,Producer,Woodland,5 g,30 cm,0,TBD,,758
+Common Mallow,Omnivore,Grassland,5 g,80 cm,0,TBD,,35940
+Wood Sorrel,Producer,Woodland,5 g,30 cm,0,TBD,,69474
+Lady’s Bedstraw,Omnivore,Grassland,5 g,80 cm,0,TBD,,75778
+Bugle,Omnivore,Woodland,5 g,30 cm,0,TBD,,60389
+Wild Pansy (Heartsease),Omnivore,Grassland,5 g,15 cm,0,TBD,,9010
+Wood Anemone,Omnivore,Woodland,5 g,20 cm,0,TBD,,49395
+Cornflower,Omnivore,Grassland,5 g,60 cm,0,TBD,,4317
+Red Campion,Producer,Woodland,5 g,80 cm,0,TBD,,110863
+Hogweed,Producer,Grassland,10 g,300 cm,0,TBD,,172047
+Common Ragwort,Producer,Grassland,5 g,80 cm,0,TBD,,76213
+Common Dog Violet,Producer,Woodland,5 g,30 cm,0,TBD,,98978
+Cuckooflower,Omnivore,Wetland,5 g,60 cm,0,TBD,,93919
+Corn Marigold,Producer,Grassland,5 g,60 cm,0,TBD,,9774
+Bird’s-foot Trefoil,Omnivore,Grassland,5 g,30 cm,0,TBD,,149519
+Blackthorn,Omnivore,Woodland,50 g,500 cm,0,TBD,,122936
+Field Scabious,Producer,Grassland,5 g,80 cm,0,TBD,,30589
+Lesser Celandine,Omnivore,Woodland,5 g,20 cm,0,TBD,,102580
+Yarrow,Omnivore,Grassland,5 g,60 cm,0,TBD,,155395
+Wild Garlic (Ramsons),Omnivore,Woodland,10 g,50 cm,0,TBD,,38571
+Silver Birch,Producer,Woodland,500 kg,2500 cm,0,TBD,,79126
+Common Hawthorn,Producer,Woodland,200 kg,500 cm,0,TBD,,229245
+Meadow Buttercup,Producer,Grassland,5 g,30 cm,0,TBD,,143038
+Elder,Producer,Woodland,150 kg,1000 cm,0,TBD,,154783
+Common Poppy,Producer,Grassland,5 g,80 cm,0,TBD,,33443
+Foxglove,Carnivore,Woodland,5 g,150 cm,0,TBD,,105076
+Daisy,Producer,Grassland,5 g,30 cm,0,TBD,,153054
+Bluebell,Producer,Woodland,5 g,30 cm,0,TBD,,11582
+Stinging Nettle,Producer,Grassland,5 g,100 cm,0,TBD,,245407
+English Oak,Producer,Woodland,6000 kg,4000 cm,0,TBD,,27847
+Dandelion,Omnivore,Grassland,5 g,40 cm,0,TBD,,63959
+red squirrel,Herbivore,Woodland,400 g,25 cm,25,Agile climber; stores food,,46
+European rabbit,Herbivore,Grassland,2 kg,40 cm,40,Fast burrower; prolific breeder,,173551
+red fox,Carnivore,Grassland,6 kg,90 cm,50,Nocturnal hunter; adaptable,,0
+European hare,Herbivore,Grassland,5 kg,60 cm,70,Fast runner; camouflage,,940
+European badger,Carnivore,Woodland,10 kg,90 cm,10,Strong digger; nocturnal,,940
+roe deer,Herbivore,Woodland,25 kg,120 cm,50,Fast runner; camouflage,,101031
+European mole,Omnivore,Grassland,80 g,20 cm,5,Excellent digger; blind but sensitive,,88175
+European otter,Carnivore,Freshwater,10 kg,100 cm,25,Excellent swimmer; hunts fish,,85011
+European water vole,Herbivore,Wetland,250 g,20 cm,5,Good swimmer; burrower,,67570
+hazel dormouse,Herbivore,Woodland,20 g,15 cm,10,Nocturnal; hibernates,,3441
+wood mouse,Herbivore,Woodland,25 g,10 cm,15,Agile climber; nocturnal,,55340
+Eurasian beaver,Herbivore,Freshwater,25 kg,120 cm,5,Builds dams; strong swimmer,,46869
+brown rat,Omnivore,Urban,300 g,20 cm,15,Highly adaptable; nocturnal,,25929
+lesser horseshoe bat,Herbivore,Woodland,10 g,5 cm,25,Nocturnal; echolocation,,38422
+brown long-eared bat,Omnivore,Woodland,15 g,6 cm,25,Nocturnal; agile flyer,,38011
+Reeves's muntjac,Omnivore,Woodland,18 kg,80 cm,25,Alert and agile; small deer,,36542
+red deer,Herbivore,Woodland,200 kg,180 cm,50,Large herbivore; fast runner,,0
+noctule bat,Omnivore,Woodland,40 g,10 cm,30,Nocturnal; powerful flyer,,28148
+pygmy shrew,Omnivore,Grassland,5 g,5 cm,15,High metabolism; fast mover,,4
+grey seal,Carnivore,Marine,200 kg,250 cm,25,Excellent swimmer; hunts fish,,26257
+stoat,Carnivore,Grassland,0.5 kg,30 cm,30,Agile hunter; flexible body,,26140
+Natterer's bat,Omnivore,Woodland,15 g,6 cm,25,Nocturnal; insect hunter,,24914
+harbour porpoise,Carnivore,Marine,60 kg,200 cm,40,Fast swimmer; echolocation,,22546
+field vole,Herbivore,Grassland,25 g,12 cm,10,Burrower; quick breeder,,22347
+bank vole,Herbivore,Grassland,25 g,12 cm,10,Good climber; stores food,,30
+common shrew,Omnivore,Grassland,10 g,7 cm,15,High metabolism; insect hunter,,21603
+harbour seal,Carnivore,Marine,120 kg,250 cm,25,Excellent swimmer; hunts fish,,65
+mouse-eared bats,Omnivore,Woodland,15 g,6 cm,25,Nocturnal; echolocation,,20090
+American mink,Carnivore,Freshwater,1 kg,60 cm,25,Swims well; hunts fish,,19770
+fallow deer,Herbivore,Woodland,100 kg,140 cm,50,Alert; fast runner,,
+weasel,Carnivore,Grassland,0.2 kg,20 cm,30,Agile hunter; small prey specialist,,18589
+greater horseshoe bat,Herbivore,Woodland,25 g,8 cm,25,Nocturnal; echolocation,,17933
+bottlenose dolphin,Carnivore,Marine,250 kg,300 cm,40,Highly intelligent; fast swimmer,,17933
+mountain hare,Herbivore,Upland,5 kg,60 cm,70,Fast runner; camouflaged in snow,,16696
+pine marten,Carnivore,Woodland,2 kg,50 cm,25,Arboreal hunter; nocturnal,,3220534
+European polecat,Carnivore,Woodland,1.5 kg,50 cm,25,Nocturnal hunter; agile,,14046
+serotine bat,Omnivore,Woodland,25 g,6 cm,25,Nocturnal; insect hunter,,12294
+Leislers bat,Omnivore,Woodland,15 g,6 cm,25,Nocturnal; fast flier,,11398
+yellow-necked mouse,Herbivore,Woodland,25 g,10 cm,15,Nocturnal; agile climber,,940
+harvest mouse,Herbivore,Grassland,5 g,6 cm,15,Builds nests in grass; agile,,8022
+Eurasian water shrew,Omnivore,Freshwater,15 g,7 cm,20,Good swimmer; insectivore,,7272
+Chinese water deer,Herbivore,Wetland,20 kg,70 cm,50,Fast runner; large tusks for defense,,6619
+house mouse,Herbivore,Urban,20 g,9 cm,15,Highly adaptable; prolific breeder,,
+whiskered Brandts bat,Omnivore,Woodland,15 g,6 cm,25,Nocturnal; agile flier,,6435
+whiskered bat,Omnivore,Woodland,15 g,6 cm,25,Nocturnal; agile flier,,
+minke whale,Carnivore,Marine,9000 kg,1000 cm,40,Fast swimmer; echolocation,,5402
+common dolphin,Carnivore,Marine,150 kg,250 cm,40,Highly social; fast swimmer,,4844
+barbastelle bat,Omnivore,Woodland,15 g,6 cm,25,Nocturnal; agile flier,,306
+sika deer,Herbivore,Woodland,70 kg,120 cm,50,Agile; seasonal breeder,,226020
+coypu,Omnivore,Freshwater,7 kg,60 cm,10,Excellent swimmer; burrows,,4190
+Nathusius pipistrelle,Omnivore,Woodland,10 g,5 cm,25,Migratory; nocturnal insect hunter,,3999
+domestic goat,Herbivore,Grassland,50 kg,100 cm,25,Adaptable feeder; agile climber,,3687
+Rissos dolphin,Carnivore,Marine,300 kg,350 cm,40,Fast swimmer; echolocation,,3441
+wild boar,Omnivore,Woodland,90 kg,150 cm,25,Strong; omnivorous,,1340
+domestic cat,Carnivore,Urban,5 kg,50 cm,40,Stealth hunter; agile,,3157
+Brandts bat,Omnivore,Woodland,15 g,6 cm,25,Nocturnal; agile flier,,1
+wild horse,Herbivore,Grassland,400 kg,150 cm,60,Fast runner; herd social behavior,,2530
+shrews,Omnivore,Grassland,10 g,6 cm,25,High metabolism; insect hunter,,2425
+lesser white-toothed shrew,Omnivore,Grassland,5 g,6 cm,25,High metabolism; insect hunter,,0
+white-beaked dolphin,Carnivore,Marine,300 kg,250 cm,40,Fast swimmer; echolocation,,25
+domestic ferret,Carnivore,Urban,1 kg,40 cm,30,Stealth hunter; agile,,3
+Bechsteins bat,Omnivore,Woodland,15 g,6 cm,25,Nocturnal; agile flier,,3
+black rat,Omnivore,Urban,300 g,20 cm,20,Highly adaptable; nocturnal,,1603
+Irish hare,Herbivore,Grassland,5 kg,60 cm,70,Fast runner; camouflaged,,1563
+humpback whale,Carnivore,Marine,30000 kg,1500 cm,40,Acrobatic swimmer; echolocation,,2
+greater white-toothed shrew,Omnivore,Grassland,10 g,6 cm,25,High metabolism; insect hunter,,
+common vole,Herbivore,Grassland,25 g,12 cm,15,Fast breeder; burrows,,226020
+European hedgehog,Omnivore,Woodland,1 kg,30 cm,15,Defensive spines; nocturnal,,0
+soprano pipistrelle bat,Omnivore,Woodland,5 g,4 cm,25,Nocturnal; agile flier,,
+common pipistrelle bat,Omnivore,Woodland,5 g,4 cm,25,Nocturnal; agile flier,,4
+,,,,,,,,1340
+,,,,,,,,905
+,,,,,,,,834
+,,,,,,,,23
+,,,,,,,,
+,,,,,,,,710
+,,,,,,,,138
+,,,,,,,,138
+,,,,,,,,565
+,,,,,,,,530
+,,,,,,,,463
+,,,,,,,,440
+,,,,,,,,430
+,,,,,,,,498
+,,,,,,,,338910
+,,,,,,,,305585
+,,,,,,,,30
+,,,,,,,,10568
