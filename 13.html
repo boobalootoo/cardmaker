@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Species Card Generator</title>
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet" />
+    <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+    <style>
+        body {
+            background: #111;
+            color: #fff;
+            font-family: 'Press Start 2P', cursive;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            min-height: 100vh;
+            align-items: center;
+            padding: 20px;
+        }
+        .card {
+            position: relative;
+            width: 800px;
+            height: 1120px;
+            margin: 20px;
+            background-size: cover;
+            background-position: center;
+            color: white;
+            box-shadow: 0 0 10px #000;
+            border-radius: 15px;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .type-icon {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background-color: rgba(255, 193, 7, 0.9);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 14px;
+            font-weight: bold;
+            text-align: center;
+            padding: 5px;
+            z-index: 5;
+            color: #111;
+            overflow: hidden; /* Hide icon overflow if it's too big */
+        }
+        .type-icon img {
+            width: 80%; /* Make the image fit inside the circle */
+            height: 80%;
+            object-fit: contain;
+        }
+        .image-frame-container {
+            position: absolute;
+            top: 80px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 450px;
+            height: 450px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-radius: 10px;
+            margin-bottom: 40px;
+            z-index: 1;
+        }
+        .image-frame-container::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url('frame.png');
+            background-size: cover;
+            z-index: 2;
+            pointer-events: none;
+        }
+        .species-img {
+            display: block;
+            width: 300px;
+            height: 300px;
+            object-fit: contain;
+            background: white;
+            border-radius: 5px;
+            z-index: 1;
+            position: relative;
+        }
+        .common-name-title {
+            position: absolute;
+            top: 500px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80%;
+            text-align: center;
+            font-size: 32px;
+            font-weight: bold;
+            color: #FFC107;
+            text-shadow:
+                -2px -2px 0 #A0522D,
+                2px -2px 0 #A0522D,
+                -2px 2px 0 #A0522D,
+                2px 2px 0 #A0522D,
+                -1px -1px 0 #D4AF37,
+                1px -1px 0 #D4AF37,
+                -1px 1px 0 #D4AF37,
+                1px 1px 0 #D4AF37,
+                0 0 8px rgba(255, 193, 7, 0.8),
+                0 0 15px rgba(255, 193, 7, 0.6);
+            z-index: 3;
+        }
+        .info {
+            position: absolute;
+            top: 610px;
+            bottom: 100px;
+            left: 120px;
+            right: 80px;
+            font-size: 16px;
+            line-height: 1.6;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            gap: 10px;
+            z-index: 3;
+        }
+        .info-line {
+            display: flex;
+            flex-direction: column;
+            margin-bottom: 5px;
+        }
+        .info-label {
+            font-weight: bold;
+            margin-bottom: 2px;
+            color: #FFC107;
+            text-shadow: 1px 1px 2px #000;
+        }
+        .info-value {
+            word-wrap: break-word;
+            white-space: pre-wrap;
+            color: white;
+            text-shadow: 1px 1px 2px #000;
+        }
+        .download-btn {
+            position: absolute;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: #FFC107;
+            border: none;
+            border-radius: 8px;
+            padding: 10px 20px;
+            font-family: 'Press Start 2P', cursive;
+            font-size: 14px;
+            cursor: pointer;
+            box-shadow:
+                0 0 5px #A0522D,
+                inset 0 -2px 0 #A0522D;
+            transition: background-color 0.3s ease;
+            z-index: 10;
+            color: #111;
+        }
+        .download-btn:hover {
+            background-color: #FFA000;
+        }
+    </style>
+</head>
+<body>
+<script>
+    // Constants for file paths, adjust as needed if your files are in a different location
+    const CSV_URL = "./cardinfo.csv";
+    const IMAGE_BASE_URL = "./";
+
+    // Mapping of habitat names to background image filenames.
+    const HABITAT_BACKGROUNDS = {
+        "woodland": "woodland.png",
+        "grassland": "grassland.png",
+        "wetland": "wetland.png",
+        "farmland": "farmland.png",
+        "urban": "urban.png",
+        "freshwater": "freshwater.png",
+        "coastal": "coastal.png",
+        "marine": "marine.png",
+        "heathland": "heathland.png",
+        "upland": "uplands.png"
+    };
+    
+    // Mapping of category names to icon filenames.
+    const CATEGORY_ICONS = {
+        "decomposer": "decomposer.png",
+        "omnivore": "omnivore.png",
+        "herbivore": "herbivore.png",
+        "carnivore": "carnivore.png",
+        "pollinator": "pollinator.png",
+        "producer": "producer.png",
+        "apex": "apex.png"
+    };
+
+    /**
+     * Sanitizes a string for use as a filename, removing invalid characters.
+     * @param {string} name - The name to sanitize.
+     * @returns {string} The sanitized filename.
+     */
+    function sanitizeFilename(name) {
+        return encodeURIComponent(name.trim()) + ".png";
+    }
+
+    /**
+     * Strips leading and trailing quotes from a string.
+     * @param {string} value - The string to process.
+     * @returns {string} The string with quotes removed.
+     */
+    function stripQuotes(value) {
+        if (typeof value === 'string' && value.startsWith('"') && value.endsWith('"')) {
+            return value.substring(1, value.length - 1);
+        }
+        return value;
+    }
+
+    /**
+     * Fetches and parses a CSV file into an array of objects.
+     * @param {string} url - The URL of the CSV file.
+     * @returns {Promise<Array<Object>>} A promise that resolves to an array of objects, where each object represents a row.
+     */
+    async function fetchCSV(url) {
+        try {
+            const response = await fetch(url);
+            if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+            const text = await response.text();
+            // Split by newline, handle potential carriage returns, and filter out empty lines
+            const lines = text.split(/\r?\n/).map(line => line.trim()).filter(Boolean);
+            const headers = lines[0].split(",").map(h => h.trim());
+            return lines.slice(1).map(line => {
+                const values = line.split(",").map(v => v.trim());
+                return headers.reduce((obj, h, i) => {
+                    obj[h] = stripQuotes(values[i] || "");
+                    return obj;
+                }, {});
+            });
+        } catch (error) {
+            console.error("Error fetching CSV:", error);
+            return [];
+        }
+    }
+
+    /**
+     * Downloads a card element as a PNG image using html2canvas.
+     * @param {HTMLElement} cardElement - The card element to download.
+     * @param {string} fileName - The desired name for the downloaded file.
+     */
+    function downloadCard(cardElement, fileName) {
+        html2canvas(cardElement, {backgroundColor: null}).then(canvas => {
+            canvas.toBlob(blob => {
+                const link = document.createElement("a");
+                link.download = fileName;
+                link.href = URL.createObjectURL(blob);
+                link.click();
+                URL.revokeObjectURL(link.href);
+            }, 'image/png');
+        });
+    }
+
+    /**
+     * Main function to fetch data and create cards dynamically.
+     */
+    async function createCards() {
+        // Fetch data from the specified CSV file.
+        const data = await fetchCSV(CSV_URL);
+        if (data.length === 0) {
+            const message = document.createElement("p");
+            message.textContent = "No card data found or an error occurred. Please check the CSV file.";
+            message.style.textAlign = "center";
+            message.style.width = "100%";
+            document.body.appendChild(message);
+            return;
+        }
+
+        // Loop through each row of data to create a new card.
+        for (const row of data) {
+            // Get the habitat from the CSV and convert to lowercase for lookup.
+            const habitat = row["Main Habitat"]?.toLowerCase() || "";
+            const backgroundImageUrl = HABITAT_BACKGROUNDS[habitat] || "woodland.png"; // Default to woodland if habitat is not found.
+
+            // Get the category from the CSV and convert to lowercase for icon lookup.
+            const category = row["Category"]?.toLowerCase() || "";
+            const categoryIconUrl = CATEGORY_ICONS[category];
+
+            // Create the main card container.
+            const card = document.createElement("div");
+            card.className = "card";
+            card.style.backgroundImage = `url('${IMAGE_BASE_URL}${backgroundImageUrl}')`;
+
+            // Species Type Icon.
+            const typeIcon = document.createElement("div");
+            typeIcon.className = "type-icon";
+            // Check if an icon URL exists for the category.
+            if (categoryIconUrl) {
+                const iconImg = document.createElement("img");
+                iconImg.src = IMAGE_BASE_URL + categoryIconUrl;
+                iconImg.alt = category;
+                typeIcon.appendChild(iconImg);
+            } else {
+                typeIcon.textContent = row["Category"] || "N/A";
+            }
+            card.appendChild(typeIcon);
+
+            // Image frame container.
+            const imageFrameContainer = document.createElement("div");
+            imageFrameContainer.className = "image-frame-container";
+
+            // Species image, using the "Common Name" column to find the image file.
+            const speciesImg = document.createElement("img");
+            speciesImg.className = "species-img";
+            speciesImg.src = IMAGE_BASE_URL + sanitizeFilename(row["Common Name"]);
+            speciesImg.onerror = () => speciesImg.remove();
+            imageFrameContainer.appendChild(speciesImg);
+            card.appendChild(imageFrameContainer);
+
+            // Title with the species' "Common Name".
+            const commonNameTitle = document.createElement("div");
+            commonNameTitle.className = "common-name-title";
+            commonNameTitle.textContent = row["Common Name"] || "N/A";
+            card.appendChild(commonNameTitle);
+
+            // Information box for details.
+            const infoBox = document.createElement("div");
+            infoBox.className = "info";
+
+            // Define the fields to display on the card based on the CSV data.
+            const fields = [
+                { key: "Main Habitat", label: "Main Habitat" },
+                { key: "Avg Weight", label: "Avg Weight" },
+                { key: "Max Length", label: "Max Length" },
+                { key: "Max Speed", label: "Max Speed" },
+                { key: "Special Abilities", label: "Special Abilities" },
+                { key: "effect", label: "Effect" },
+                { key: "Population", label: "Population" }
+            ];
+
+            // Loop through the fields and add them to the info box.
+            for (const field of fields) {
+                const line = document.createElement("div");
+                line.className = "info-line";
+                const label = document.createElement("div");
+                label.className = "info-label";
+                label.textContent = field.label + ":";
+                const value = document.createElement("div");
+                value.className = "info-value";
+                value.textContent = row[field.key] || "________________"; // Placeholder if value is missing.
+                line.appendChild(label);
+                line.appendChild(value);
+                infoBox.appendChild(line);
+            }
+
+            card.appendChild(infoBox);
+
+            // Download button for each card.
+            const downloadButton = document.createElement("button");
+            downloadButton.className = "download-btn";
+            downloadButton.textContent = "Download Card";
+            downloadButton.onclick = () => downloadCard(card, `${row["Common Name"]}.png`);
+            card.appendChild(downloadButton);
+
+            // Add the created card to the body of the document.
+            document.body.appendChild(card);
+        }
+    }
+
+    // Call the main function to start creating the cards.
+    window.onload = createCards;
+</script>
+</body>
+</html>
