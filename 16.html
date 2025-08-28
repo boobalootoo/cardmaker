@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Auto PDF Export</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+        }
+        .card-container {
+            /* This container will hold all the cards and will be exported as a single page */
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            align-items: center;
+            width: 11.7in; /* A4 landscape width */
+            height: 8.27in; /* A4 landscape height */
+            padding: 0.5in;
+            box-sizing: border-box;
+        }
+        .card {
+            /* The card itself is rotated to fit the landscape A4 page */
+            width: 300px;
+            height: 400px;
+            border: 2px solid black;
+            border-radius: 15px;
+            padding: 10px;
+            margin: 20px; /* Provides space between cards */
+            background: white;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+            page-break-inside: avoid; /* Prevents cards from splitting across pages */
+            transform-origin: center center;
+            transform: rotate(90deg) translateX(50px) translateY(50px);
+        }
+        /* Media query for print view - this is what the PDF will look like */
+        @media print {
+            body {
+                width: 11.7in;
+                height: 8.27in;
+                margin: 0;
+                padding: 0;
+                display: block;
+            }
+            .card-container {
+                display: flex;
+                flex-direction: row;
+                flex-wrap: wrap;
+                justify-content: center;
+                align-items: center;
+                width: 100%;
+                height: 100%;
+                padding: 0;
+            }
+            .card {
+                transform: none; /* Do not rotate the cards on print */
+                width: 400px;
+                height: 300px;
+                margin: 0;
+                border: 1px solid #ccc;
+                page-break-after: never;
+            }
+            .hidden-for-print {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <h1 class="hidden-for-print">Card Preview (Click Save PDF to Export)</h1>
+
+    <div id="cards" class="card-container">
+        <!-- These are your cards. Feel free to add more! -->
+        <div class="card">
+            <h2>Fox</h2>
+            <p>Diet: Omnivore</p>
+            <p>Population: Common</p>
+            <p>Size: Medium</p>
+            <p>Speed: Fast</p>
+            <p>Special Abilities: Stealth, Adaptability</p>
+        </div>
+        <div class="card">
+            <h2>Frog</h2>
+            <p>Diet: Carnivore</p>
+            <p>Population: Abundant</p>
+            <p>Size: Small</p>
+            <p>Speed: Moderate</p>
+            <p>Special Abilities: Jumping, Camouflage</p>
+        </div>
+        <div class="card">
+            <h2>Owl</h2>
+            <p>Diet: Carnivore</p>
+            <p>Population: Widespread</p>
+            <p>Size: Medium</p>
+            <p>Speed: Silent Flight</p>
+            <p>Special Abilities: Night Vision, Silent Flight</p>
+        </div>
+        <div class="card">
+            <h2>Squirrel</h2>
+            <p>Diet: Herbivore</p>
+            <p>Population: Common</p>
+            <p>Size: Small</p>
+            <p>Speed: Quick</p>
+            <p>Special Abilities: Tree Climbing, Hoarding</p>
+        </div>
+        <div class="card">
+            <h2>Deer</h2>
+            <p>Diet: Herbivore</p>
+            <p>Population: Common</p>
+            <p>Size: Large</p>
+            <p>Speed: Fast</p>
+            <p>Special Abilities: Agility, Hearing</p>
+        </div>
+        <div class="card">
+            <h2>Rabbit</h2>
+            <p>Diet: Herbivore</p>
+            <p>Population: Abundant</p>
+            <p>Size: Small</p>
+            <p>Speed: Fast</p>
+            <p>Special Abilities: Digging, Agility</p>
+        </div>
+    </div>
+
+    <!-- html2pdf.js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.3/html2pdf.bundle.min.js"></script>
+    <script>
+        window.onload = function() {
+            const element = document.getElementById("cards");
+            const opt = {
+                margin: 0,
+                filename: 'species-cards.pdf',
+                image: { type: 'jpeg', quality: 1 },
+                html2canvas: { scale: 2 },
+                jsPDF: { unit: 'in', format: 'a4', orientation: 'landscape' }
+            };
+            html2pdf().set(opt).from(element).save();
+        }
+    </script>
+</body>
+</html>
