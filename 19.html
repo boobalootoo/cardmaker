@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Species Card Generator</title>
+<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<style>
+body {
+    background: #111;
+    color: #fff;
+    font-family: 'Press Start 2P', cursive;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    padding: 20px;
+}
+.card {
+    position: relative;
+    width: 800px;
+    height: 1120px;
+    margin: 20px;
+    background-size: cover;
+    background-position: center;
+    color: white;
+    box-shadow: 0 0 10px #000;
+    border-radius: 15px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.type-icon { position: absolute; top: 20px; right: 20px; width: 80px; height: 80px; border-radius: 50%; background-color: rgba(255,193,7,0.9); display:flex; justify-content:center; align-items:center; font-size:14px; font-weight:bold; text-align:center; padding:5px; z-index:5; color:#111; overflow:hidden;}
+.type-icon img { width:80%; height:80%; object-fit:contain;}
+.image-frame-container { position:absolute; top:80px; left:50%; transform:translateX(-50%); width:450px; height:450px; display:flex; justify-content:center; align-items:center; border-radius:10px; z-index:1;}
+.image-frame-container::after { content:''; position:absolute; top:0; left:0; width:100%; height:100%; background-image:url('frame.png'); background-size:cover; z-index:2; pointer-events:none;}
+.species-img { display:block; width:300px; height:300px; object-fit:contain; background:white; border-radius:5px; z-index:1; position:relative; }
+.common-name-title { position:absolute; top:500px; left:50%; transform:translateX(-50%); width:80%; text-align:center; font-size:32px; font-weight:bold; color:#FFC107; text-shadow:-2px -2px 0 #A0522D,2px -2px 0 #A0522D,-2px 2px 0 #A0522D,2px 2px 0 #A0522D,-1px -1px 0 #D4AF37,1px -1px 0 #D4AF37,-1px 1px 0 #D4AF37,1px 1px 0 #D4AF37,0 0 8px rgba(255,193,7,0.8),0 0 15px rgba(255,193,7,0.6); z-index:3;}
+.info { position:absolute; top:610px; bottom:100px; left:120px; right:80px; font-size:16px; line-height:1.6; display:flex; flex-direction:column; justify-content:flex-start; gap:10px; z-index:3;}
+.info-line { display:flex; flex-direction:column; margin-bottom:5px; }
+.info-label { font-weight:bold; margin-bottom:2px; color:#FFC107; text-shadow:1px 1px 2px #000; }
+.info-value { word-wrap:break-word; white-space:pre-wrap; color:white; text-shadow:1px 1px 2px #000; }
+#export-btn { position:fixed; top:20px; left:50%; transform:translateX(-50%); background-color:#FFC107; border:none; border-radius:8px; padding:10px 20px; font-family:'Press Start 2P',cursive; font-size:14px; cursor:pointer; box-shadow:0 0 5px #A0522D, inset 0 -2px 0 #A0522D; z-index:1000; color:#111;}
+#export-btn:hover { background-color:#FFA000; }
+
+/* Styles for the loading pop-up */
+.loading-popup {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.7);
+    color: white;
+    text-align: center;
+    padding-top: 20%;
+    z-index: 2000;
+}
+.loading-content {
+    background-color: #333;
+    padding: 40px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+    display: inline-block;
+}
+</style>
+</head>
+<body>
+<button id="export-btn">Export All to PDF</button>
+
+<div class="loading-popup" id="loadingPopup">
+    <div class="loading-content">
+        <h2>Generating PDF...</h2>
+        <p>This may take up to 10 minutes, please do not close this window.</p>
+    </div>
+</div>
+
+<script>
+const { jsPDF } = window.jspdf;
+const CSV_URL = "./cardinfo.csv";
+const IMAGE_BASE_URL = "./";
+const HABITAT_BACKGROUNDS = {"woodland":"woodland.png","grassland":"grassland.png","wetland":"wetland.png","farmland":"farmland.png","urban":"urban.png","freshwater":"freshwater.png","coastal":"coastal.png","marine":"marine.png","heathland":"heathland.png","upland":"uplands.png"};
+const CATEGORY_ICONS = {"decomposer":"decomposer.png","omnivore":"omnivore.png","herbivore":"herbivore.png","carnivore":"carnivore.png","pollinator":"pollinator.png","producer":"producer.png","apex":"apex.png"};
+
+function sanitizeFilename(name){return encodeURIComponent(name.trim())+".png";}
+function stripQuotes(value){if(typeof value==='string'&&value.startsWith('"')&&value.endsWith('"')){return value.substring(1,value.length-1);}return value;}
+
+async function fetchCSV(url){
+    try {
+        const res = await fetch(url);
+        const text = await res.text();
+        const lines = text.split(/\r?\n/).map(l=>l.trim()).filter(Boolean);
+        if (lines.length < 2) return [];
+        const headers = lines[0].split(",").map(h=>h.trim());
+        return lines.slice(1).map(line=>{
+            const values = line.split(",").map(v=>v.trim());
+            return headers.reduce((obj,h,i)=>{obj[h]=stripQuotes(values[i]||"");return obj;},{});
+        });
+    } catch(error) {
+        console.error("Error fetching CSV:", error);
+        return [];
+    }
+}
+
+async function createCards(){
+    const data = await fetchCSV(CSV_URL);
+    if(data.length===0){
+        const msg = document.createElement("p");
+        msg.textContent="No card data found.";
+        msg.style.width="100%"; msg.style.textAlign="center";
+        document.body.appendChild(msg);
+        return;
+    }
+    const cardsContainer = document.createElement("div");
+    cardsContainer.id = "cards";
+    document.body.appendChild(cardsContainer);
+
+    for(const row of data){
+        const habitat = row["Main Habitat"]?.toLowerCase()||"";
+        const backgroundImageUrl = HABITAT_BACKGROUNDS[habitat] || "woodland.png";
+        const category = row["Category"]?.toLowerCase()||"";
+        const categoryIconUrl = CATEGORY_ICONS[category];
+        const card = document.createElement("div");
+        card.className = "card";
+        card.style.backgroundImage = `url('${IMAGE_BASE_URL}${backgroundImageUrl}')`;
+        
+        const typeIcon = document.createElement("div");
+        typeIcon.className="type-icon";
+        if(categoryIconUrl){
+            const img = document.createElement("img");
+            img.src = IMAGE_BASE_URL + categoryIconUrl;
+            img.alt = category;
+            typeIcon.appendChild(img);
+        } else typeIcon.textContent=row["Category"]||"N/A";
+        card.appendChild(typeIcon);
+
+        const frame = document.createElement("div");
+        frame.className="image-frame-container";
+        const img = document.createElement("img");
+        img.className="species-img";
+        img.src = IMAGE_BASE_URL + sanitizeFilename(row["Common Name"]);
+        img.onerror = ()=>img.remove();
+        frame.appendChild(img);
+        card.appendChild(frame);
+
+        const title = document.createElement("div");
+        title.className="common-name-title";
+        title.textContent = row["Common Name"]||"N/A";
+        card.appendChild(title);
+
+        const info = document.createElement("div");
+        info.className="info";
+        const fields = [
+            {key:"Main Habitat", label:"Main Habitat"},
+            {key:"Avg Weight", label:"Avg Weight"},
+            {key:"Max Length", label:"Max Length"},
+            {key:"Max Speed", label:"Max Speed"},
+            {key:"Special Abilities", label:"Special Abilities"},
+            {key:"effect", label:"Effect"},
+            {key:"Population", label:"Population"}
+        ];
+        for(const f of fields){
+            const line = document.createElement("div"); line.className="info-line";
+            const label = document.createElement("div"); label.className="info-label"; label.textContent=f.label+":";
+            const val = document.createElement("div"); val.className="info-value"; val.textContent=row[f.key]||"________________";
+            line.appendChild(label); line.appendChild(val); info.appendChild(line);
+        }
+        card.appendChild(info);
+        cardsContainer.appendChild(card);
+    }
+}
+
+window.onload = createCards;
+
+// PDF Export
+document.getElementById("export-btn").addEventListener("click", async ()=>{
+    const loadingPopup = document.getElementById("loadingPopup");
+    loadingPopup.style.display = 'block'; // Show the popup
+
+    const cards = Array.from(document.querySelectorAll(".card"));
+    if(cards.length===0) {
+        loadingPopup.style.display = 'none';
+        return;
+    }
+
+    const pdf = new jsPDF({unit:"pt", format:"a4"});
+    const PAGE_WIDTH = 595.28;
+    const PAGE_HEIGHT = 841.89;
+    const MARGIN = 10;
+    const ROWS=4, COLS=2;
+    
+    // Original card dimensions from CSS
+    const ORIGINAL_CARD_WIDTH = 800;
+    const ORIGINAL_CARD_HEIGHT = 1120;
+    const CARD_ASPECT_RATIO = ORIGINAL_CARD_HEIGHT / ORIGINAL_CARD_WIDTH;
+
+    let cardIndex = 0;
+
+    while(cardIndex < cards.length){
+        for(let r=0; r<ROWS; r++){
+            for(let c=0; c<COLS; c++){
+                if(cardIndex >= cards.length) break;
+                const card = cards[cardIndex];
+                
+                // Render card to canvas
+                const canvas = await html2canvas(card, {backgroundColor:null, scale:0.5});
+                
+                // Create a new canvas to rotate the image data
+                const rotatedCanvas = document.createElement('canvas');
+                rotatedCanvas.width = canvas.height;
+                rotatedCanvas.height = canvas.width;
+                const ctx = rotatedCanvas.getContext('2d');
+                ctx.translate(canvas.height, 0);
+                ctx.rotate(Math.PI / 2);
+                ctx.drawImage(canvas, 0, 0);
+                
+                const imgData = rotatedCanvas.toDataURL("image/png");
+                
+                // Calculate dimensions to fit within the grid cell while maintaining aspect ratio
+                let finalWidth, finalHeight;
+                const gridCellWidth = (PAGE_WIDTH - 2*MARGIN)/COLS;
+                const gridCellHeight = (PAGE_HEIGHT - 2*MARGIN)/ROWS;
+
+                // Adjust for rotation and aspect ratio
+                const rotatedAspectRatio = canvas.width / canvas.height;
+                if (gridCellWidth / gridCellHeight > rotatedAspectRatio) {
+                    finalHeight = gridCellHeight - 10; // 10pt padding
+                    finalWidth = finalHeight * rotatedAspectRatio;
+                } else {
+                    finalWidth = gridCellWidth - 10; // 10pt padding
+                    finalHeight = finalWidth / rotatedAspectRatio;
+                }
+
+                const x = MARGIN + c * gridCellWidth + (gridCellWidth - finalWidth) / 2;
+                const y = MARGIN + r * gridCellHeight + (gridCellHeight - finalHeight) / 2;
+                
+                // Add the rotated image to the PDF
+                pdf.addImage(imgData, "PNG", x, y, finalWidth, finalHeight);
+                cardIndex++;
+            }
+        }
+        if(cardIndex < cards.length) pdf.addPage();
+    }
+    
+    pdf.save("species_cards.pdf");
+    loadingPopup.style.display = 'none'; // Hide the popup after saving
+});
+</script>
+</body>
+</html>
