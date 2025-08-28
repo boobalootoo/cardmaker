@@ -18,7 +18,7 @@
 
         .booklet-page {
             width: 841.89pt; /* A4 width in landscape */
-            height: 595.28pt; /* A4 height in landscape */
+            min-height: 595.28pt; /* A4 height in landscape, allows for growth */
             box-sizing: border-box;
             background: white;
             display: flex;
@@ -38,8 +38,8 @@
 
         .panel-content {
             width: 100%;
-            height: 100%;
-            overflow-y: auto; /* For on-screen viewing */
+            padding-bottom: 20pt; /* Add padding to the bottom */
+            /* Removed height: 100% and overflow-y: hidden to allow content to flow */
         }
         
         .panel h1, .panel h2 {
@@ -136,7 +136,12 @@
 
                 <div class="game-suggestion">
                     <h3>Dark Mode / Domination</h3>
-                    <p>In this game, players try to defeat each other. The goal is to build the most powerful ecosystem, or to "attack" your opponent's species by playing cards that disrupt their food chain or environment. This is a competitive game for 2 or more players. Use the "Special Abilities" and "Diet" stats to plan your attacks and defenses!</p>
+                    <p>In this competitive game, players face off to dominate the ecosystem. The ultimate goal is to eliminate your opponent's species by direct consumption or by killing them. Whether one species can eliminate another depends on a few key factors: its <strong>class</strong> (e.g., herbivore, carnivore, insectivore), <strong>habitat</strong>, and unique <strong>abilities</strong>.</p>
+                    <h4>Combat & Elimination</h4>
+                    <p>A species can be successfully eliminated if its population is smaller than the attacking species. If the attacking population is greater, the eliminated species and anything dependent on it are removed from play. If the populations are of similar size, the attack only reduces the population, but the species remains in play. Abilities can affect combat: for example, a card with "Poison" can make a species immune to certain attacks, while "Camouflage" may require the predator's population to be more than double to succeed.</p>
+                    <h4>Symbiotic Relationships</h4>
+                    <p>You can increase a species' population or abilities by playing a symbiotic partner card. For example, playing a bee card next to a flower card could boost the flower's population or defensive capabilities.</p>
+                    <p>At any point, you can choose to "pit your entire deck against your opponent" for a massive, all-or-nothing showdown. The player with the most powerful combination of species, habitats, and abilities will win the round.</p>
                 </div>
 
                 <div class="game-suggestion">
@@ -166,12 +171,12 @@
 
                 <h3>Game Suggestions (Continued)</h3>
                 <div class="game-suggestion">
-                    <h4>Top Trumps</h4>
+                    <h4>Highest Value Showdown</h4>
                     <p>Challenge other players to a duel. Each player chooses a characteristic from their card (e.g., 'Max Speed'), and the highest value wins both cards. This can be played in a round-robin format or as a single-player challenge.</p>
                 </div>
                 
                 <div class="game-suggestion">
-                    <h4>Uno / Snap</h4>
+                    <h4>Matching Game</h4>
                     <p>A classic matching game. Match cards based on either their 'Category' or 'Main Habitat'. The goal is to be the first to get rid of all your cards.</p>
                 </div>
 
