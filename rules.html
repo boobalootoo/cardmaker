@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Game Manual</title>
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Inter:wght@400;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            margin: 0;
+            padding: 0;
+            background: #f0f0f0;
+            color: #333;
+        }
+
+        .booklet-page {
+            width: 841.89pt; /* A4 width in landscape */
+            height: 595.28pt; /* A4 height in landscape */
+            box-sizing: border-box;
+            background: white;
+            display: flex;
+            page-break-after: always;
+        }
+        
+        .panel {
+            width: 50%;
+            height: 100%;
+            padding: 20pt;
+            box-sizing: border-box;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            align-items: center;
+        }
+
+        .panel-content {
+            width: 100%;
+            height: 100%;
+            overflow-y: auto; /* For on-screen viewing */
+        }
+        
+        .panel h1, .panel h2 {
+            font-family: 'Press Start 2P', cursive;
+            color: #FFC107;
+            text-shadow: 2px 2px #A0522D;
+            text-align: center;
+            margin-bottom: 10pt;
+        }
+
+        .panel h3 {
+            font-family: 'Press Start 2P', cursive;
+            margin-top: 20pt;
+            color: #111;
+        }
+        
+        p, ul, li {
+            line-height: 1.5;
+            text-align: justify;
+        }
+
+        .title-block {
+            text-align: center;
+            margin-bottom: 20pt;
+        }
+
+        #front-cover {
+            background-image: url('https://placehold.co/420x595/5A5A5A/FFFFFF?text=Front+Cover');
+            background-size: cover;
+            color: white;
+            position: relative;
+        }
+        
+        #front-cover h1 {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: white;
+            text-shadow: 2px 2px #000;
+        }
+
+        .back-cover-text {
+            text-align: center;
+            margin-top: auto;
+        }
+
+        .game-suggestion h4 {
+            font-family: 'Press Start 2P', cursive;
+            margin-bottom: 5pt;
+        }
+
+        /* Loading popup styles */
+        .loading-popup {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            color: white;
+            text-align: center;
+            padding-top: 20%;
+            z-index: 2000;
+        }
+        .loading-content {
+            background-color: #333;
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+            display: inline-block;
+        }
+
+    </style>
+</head>
+<body>
+    <div class="loading-popup" id="loadingPopup">
+        <div class="loading-content">
+            <h2>Generating PDF Manual...</h2>
+            <p>This may take a few moments, please do not close this window.</p>
+        </div>
+    </div>
+    
+    <!-- Page 1 (Inside Panels) -->
+    <div class="booklet-page" id="page1">
+        <!-- Inside Left Panel -->
+        <div class="panel" id="inside-left">
+            <div class="panel-content">
+                <div class="title-block">
+                    <h1>Playing Your Way</h1>
+                    <p>This game is about creativity and collaboration. The suggestions below are just a starting point. Feel free to mix and match rules, invent new games, and create house rules with your friends and family.</p>
+                </div>
+
+                <div class="game-suggestion">
+                    <h3>Dark Mode / Domination</h3>
+                    <p>In this game, players try to defeat each other. The goal is to build the most powerful ecosystem, or to "attack" your opponent's species by playing cards that disrupt their food chain or environment. This is a competitive game for 2 or more players. Use the "Special Abilities" and "Diet" stats to plan your attacks and defenses!</p>
+                </div>
+
+                <div class="game-suggestion">
+                    <h3>Light Mode / Conservation</h3>
+                    <p>Work together to build a thriving ecosystem. The goal is to ensure species have as many positive impacts on each other as possible. Players can use cards to help each other, such as by placing a pollinator card in a partner's ecosystem to help a producer card. The game ends when all cards have been played, and the team with the most connections wins!</p>
+                </div>
+                
+                <div class="game-suggestion">
+                    <h3>The Race</h3>
+                    <p>A fast-paced game where the first player to complete a food chain wins. Players take turns drawing cards until they can lay down a full food chain (starting with a producer). You can choose to play linearly or allow for complex food webs. To add a twist, you can introduce "sabotage" rules where you play a card on another player's food chain to remove a species and anything dependent on it. The first player to complete their food chain wins the round.</p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Inside Right Panel -->
+        <div class="panel" id="inside-right">
+            <div class="panel-content">
+                <h2>The Cards Explained</h2>
+                <p>These cards are your tools for building, competing, and collaborating. Each card represents a unique species with special characteristics.</p>
+                <ul>
+                    <li><strong>Common Name:</strong> The name you know them by.</li>
+                    <li><strong>Main Habitat:</strong> The environment where the species lives. Use this for matching games.</li>
+                    <li><strong>Avg Weight / Max Length / Max Speed:</strong> Use these for Top Trumps style games where you compare species characteristics.</li>
+                    <li><strong>Special Abilities:</strong> Unique actions the species can take in certain games. These are open to interpretation; feel free to invent your own abilities.</li>
+                    <li><strong>Category:</strong> The species' role in its ecosystem (e.g., Omnivore, Producer). This is key for building food chains or for matching games like UNO.</li>
+                </ul>
+
+                <h3>Game Suggestions (Continued)</h3>
+                <div class="game-suggestion">
+                    <h4>Top Trumps</h4>
+                    <p>Challenge other players to a duel. Each player chooses a characteristic from their card (e.g., 'Max Speed'), and the highest value wins both cards. This can be played in a round-robin format or as a single-player challenge.</p>
+                </div>
+                
+                <div class="game-suggestion">
+                    <h4>Uno / Snap</h4>
+                    <p>A classic matching game. Match cards based on either their 'Category' or 'Main Habitat'. The goal is to be the first to get rid of all your cards.</p>
+                </div>
+
+                <div class="game-suggestion">
+                    <h4>Magic Spell Game</h4>
+                    <p>A unique and challenging game where scientific names become spells. The scientific name on each card is a "spell" with different effects. To cast a spell, a player must recite the scientific name from their card while it is face down. If you mispronounce, stutter, or forget a part of the name, the spell fails! The effects of the spells are entirely up to you—make them up together with other players!</p>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        const { jsPDF } = window.jspdf;
+
+        document.getElementById("export-btn").addEventListener("click", async () => {
+            const loadingPopup = document.getElementById("loadingPopup");
+            loadingPopup.style.display = 'block';
+
+            const pages = [document.getElementById('page1')];
+            const pdf = new jsPDF({
+                orientation: 'landscape',
+                unit: 'pt',
+                format: 'a4'
+            });
+
+            for (let i = 0; i < pages.length; i++) {
+                const page = pages[i];
+                const canvas = await html2canvas(page, { scale: 2 });
+                const imgData = canvas.toDataURL('image/jpeg', 1.0);
+                
+                if (i > 0) {
+                    pdf.addPage();
+                }
+
+                pdf.addImage(imgData, 'JPEG', 0, 0, pdf.internal.pageSize.getWidth(), pdf.internal.pageSize.getHeight());
+            }
+
+            pdf.save("Game_Manual.pdf");
+            loadingPopup.style.display = 'none';
+        });
+    </script>
+</body>
+</html>
